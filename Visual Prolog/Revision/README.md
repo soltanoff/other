@@ -3,7 +3,7 @@
 ABOUT
 -----
 
-Visual Prolog 4.5
+Visual Prolog 5.2
 
 This simple project demonstrates the operation of logic programming in 
 solving logical problems. Through the mechanism of backtracking 
