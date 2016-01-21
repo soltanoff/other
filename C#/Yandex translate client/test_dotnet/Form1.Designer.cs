@@ -1,4 +1,4 @@
-﻿namespace test_dotnet
+namespace test_dotnet
 {
     partial class mainform
     {
