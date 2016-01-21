@@ -8,3 +8,4 @@ C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.exe
 C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.pdb
 C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.mainform.resources
 C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.About.resources
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\bin\Debug\test_dotnet.exe.config

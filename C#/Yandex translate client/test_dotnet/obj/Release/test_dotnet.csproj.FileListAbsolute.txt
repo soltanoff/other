@@ -11,3 +11,13 @@ C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Release\test_dotnet.csprojRes
 C:\Users\Admin\Documents\GitHub\other\C#\test_dotnet\test_dotnet\bin\Release\test_dotnet.exe.config
 C:\Users\Admin\Documents\GitHub\other\C#\test_dotnet\test_dotnet\obj\Release\test_dotnet.exe
 C:\Users\Admin\Documents\GitHub\other\C#\test_dotnet\test_dotnet\obj\Release\test_dotnet.pdb
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\bin\Release\test_dotnet.exe.config
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\bin\Release\test_dotnet.exe
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\bin\Release\test_dotnet.pdb
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.About.resources
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.mainform.resources
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.Properties.Resources.resources
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.csproj.GenerateResource.Cache
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.exe
+C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\obj\Release\test_dotnet.pdb
