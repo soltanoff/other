@@ -1,0 +1,10 @@
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\bin\Debug\test_dotnet.exe.config
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\bin\Debug\test_dotnet.exe
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\bin\Debug\test_dotnet.pdb
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.Properties.Resources.resources
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.csproj.GenerateResource.Cache
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.exe
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.pdb
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.mainform.resources
+C:\Users\Admin\Desktop\test_dotnet\test_dotnet\obj\Debug\test_dotnet.About.resources
