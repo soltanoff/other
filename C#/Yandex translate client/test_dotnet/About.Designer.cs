@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
             this.label_about = new System.Windows.Forms.Label();
             this.linkLabel_vk = new System.Windows.Forms.LinkLabel();
-            this.pictureB = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureB)).BeginInit();
+            this.pictureB_yatrans = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureB_yatrans)).BeginInit();
             this.SuspendLayout();
             // 
             // label_about
@@ -56,21 +56,21 @@
             this.linkLabel_vk.Text = "http://vk.com/id96996256";
             this.linkLabel_vk.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
-            // pictureB
+            // pictureB_yatrans
             // 
-            this.pictureB.Image = global::test_dotnet.Properties.Resources.unnamed1;
-            this.pictureB.Location = new System.Drawing.Point(374, 82);
-            this.pictureB.Name = "pictureB";
-            this.pictureB.Size = new System.Drawing.Size(119, 114);
-            this.pictureB.TabIndex = 2;
-            this.pictureB.TabStop = false;
+            this.pictureB_yatrans.Image = global::Translator.Properties.Resources.yandex_translate;
+            this.pictureB_yatrans.Location = new System.Drawing.Point(371, 83);
+            this.pictureB_yatrans.Name = "pictureB_yatrans";
+            this.pictureB_yatrans.Size = new System.Drawing.Size(121, 113);
+            this.pictureB_yatrans.TabIndex = 2;
+            this.pictureB_yatrans.TabStop = false;
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 208);
-            this.Controls.Add(this.pictureB);
+            this.Controls.Add(this.pictureB_yatrans);
             this.Controls.Add(this.linkLabel_vk);
             this.Controls.Add(this.label_about);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
@@ -80,7 +80,7 @@
             this.Text = "About";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.About_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureB)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureB_yatrans)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -90,6 +90,6 @@
 
         private System.Windows.Forms.Label label_about;
         private System.Windows.Forms.LinkLabel linkLabel_vk;
-        private System.Windows.Forms.PictureBox pictureB;
+        private System.Windows.Forms.PictureBox pictureB_yatrans;
     }
 }
