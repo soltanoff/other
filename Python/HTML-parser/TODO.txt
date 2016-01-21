@@ -1,4 +1,4 @@
 TODO list:
 
-1) Make parser schedule next TV show.
-2) Make the export data obtained in csv-files
+1) Make parser schedule next TV show. +
+2) Make the export data obtained in csv-files +
