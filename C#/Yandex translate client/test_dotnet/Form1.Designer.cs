@@ -57,6 +57,7 @@ namespace test_dotnet
             this.contextMS_richTBres.SuspendLayout();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
+            //this.ShowInTaskbar = false;
             // 
             // button_url
             // 
@@ -308,7 +309,7 @@ namespace test_dotnet
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "mainform";
-            this.Text = "Translate v1.3";
+            this.Text = "Translate v1.4";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);
             this.contextMS_richTBres.ResumeLayout(false);
