@@ -12,21 +12,19 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 // ===================================================================================================================
+using System.Runtime.InteropServices;
 
 namespace test_dotnet
 {
     public partial class mainform : Form
     {
-        public mainform() { InitializeComponent(); }
+        public mainform() { InitializeComponent(); this.KeyPreview = true; }
         // ===================================================================================================================
         // ===================================================================================================================
         // ===================================================================================================================
         // ===================================================================================================================
         // Basic constant
         private const int RESULT_TEXT_POS = 36;
-
-        private bool auto_detec_lang;
-
         private const string PAGE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
         private const string API_KEY = "trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3";
         private const string TEXT_BLOCK = "&text=";
@@ -36,6 +34,7 @@ namespace test_dotnet
         private const string ENCODE_NAME = "windows-1251";
         // ===================================================================================================================
         private String GetQuery; // GET query from PAGE_URL
+        private bool auto_detec_lang;
         // ===================================================================================================================
         // Basic Exeption from PAGE_URL
         public class API_Exception : System.Exception
@@ -80,8 +79,7 @@ namespace test_dotnet
         // ===================================================================================================================
         public String set_url()
         {
-            int i = richTB.Text.Length;
-            return PAGE_URL + API_KEY + TEXT_BLOCK + richTB.Text.ToString() + LANG_BLOCK + get_translate_dir();
+            return PAGE_URL + API_KEY + TEXT_BLOCK + WebUtility.UrlEncode(richTB.Text.Replace("\\n", "\n").Replace("\t", " @1101 ")) + LANG_BLOCK + get_translate_dir();
         }
 
         public StreamReader get_connect(String Url)
@@ -98,6 +96,7 @@ namespace test_dotnet
         public String get_translate()
         {
             auto_detec_lang = false;
+            String test = set_url();
             GetQuery = get_connect(set_url()).ReadToEnd();
 
             check_API_exception();
@@ -108,11 +107,47 @@ namespace test_dotnet
                 not_changed_detect_label = true;
                 Lang_CB_1.SelectedIndex = get_id_lang_code();
             }
-            return get_result().Replace("\\n", "\n").Replace("\\t", "\t");
+            return get_result().Replace("\\n", "\n").Replace("@1101", "\t");
         }
+        // ===================================================================================================================                            
         // ===================================================================================================================
         // ===================================================================================================================
         // ===================================================================================================================
+        // ===================================================================================================================
+        // Global hook
+        //Translator.globalKeyboardHook gkh = new Translator.globalKeyboardHook();
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Lang_CB_1.Items.AddRange(Lang_name); Lang_CB_1.Items.Add("Определить язык");
+            Lang_CB_1.SelectedIndex = Lang_name.Length;
+
+            Lang_CB_2.Items.AddRange(Lang_name);
+            Lang_CB_2.SelectedIndex = 1;
+
+            Detect_label.Visible = false;
+            //Global HOOK
+            //gkh.HookedKeys.Add(Keys.F10);
+            //gkh.KeyUp += gkh_KeyUp;
+        }
+
+        /*private void gkh_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F10)
+            {
+                MessageBox.Show("test");
+            }
+        }/**/
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.F5 && e.Alt)
+            {
+                MessageBox.Show("Test");
+                e.Handled = true;
+            }
+        }
         // ===================================================================================================================
         private void button_url_Click(object sender, EventArgs e)
         {
@@ -172,18 +207,7 @@ namespace test_dotnet
             }
             
         }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            Lang_CB_1.Items.AddRange(Lang_name); Lang_CB_1.Items.Add("Определить язык");
-            Lang_CB_1.SelectedIndex = Lang_name.Length;
-
-            Lang_CB_2.Items.AddRange(Lang_name);
-            Lang_CB_2.SelectedIndex = 1;
-
-            Detect_label.Visible = false;
-        }
-
+        
         private void button_reverse_Click(object sender, EventArgs e)
         {
             if (Lang_CB_1.SelectedIndex == 5) Lang_CB_1.SelectedIndex = 0;
