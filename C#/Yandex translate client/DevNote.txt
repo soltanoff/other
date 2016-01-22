@@ -1,11 +1,32 @@
-trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3
+﻿trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3
 
 https://translate.yandex.net/api/v1.5/tr.json/translate ? 
 key=trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3
  & text=привет
  & lang=ru
 
-
+        /*
+            &                   @1101
+            *                   @1102
+            (                   @1103
+            )                   @1104
+            -                   @1105
+            +                   @1106
+            =                   @1107
+            |                   @1108
+            \                   @1109
+            /                   @1110
+            ?                   @1111
+            !                   @1112
+            .                   @1113
+            ,                   @1114
+            <                   @1115
+            >                   @1116
+            №                   @1117
+            :                   @1118
+            ;                   @1119
+            \t                  @1120
+        */ 
 
 Язык	Код
 албанский	sq
