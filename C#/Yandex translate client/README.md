@@ -48,7 +48,7 @@ VERSION HISTORY
 
       1) Fixed output of special and arithmetic characters
 
-      2) Include globalHookKey class
+      2) Include globalKeyboardHook class
 
 - ver 1.4.1
 
@@ -56,6 +56,6 @@ VERSION HISTORY
 
       2) Added HotKey hook (with WinAPI)
 
-      3) Exclude globalHookKey class
+      3) Exclude globalKeyboardHook class
 
       4) Added #region
