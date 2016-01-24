@@ -59,9 +59,9 @@ namespace test_dotnet
             // pictureB_yatrans
             // 
             this.pictureB_yatrans.Image = global::Translator.Properties.Resources.yandex_translate;
-            this.pictureB_yatrans.Location = new System.Drawing.Point(371, 83);
+            this.pictureB_yatrans.Location = new System.Drawing.Point(374, 81);
             this.pictureB_yatrans.Name = "pictureB_yatrans";
-            this.pictureB_yatrans.Size = new System.Drawing.Size(121, 113);
+            this.pictureB_yatrans.Size = new System.Drawing.Size(119, 110);
             this.pictureB_yatrans.TabIndex = 2;
             this.pictureB_yatrans.TabStop = false;
             // 
@@ -69,7 +69,7 @@ namespace test_dotnet
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 208);
+            this.ClientSize = new System.Drawing.Size(504, 200);
             this.Controls.Add(this.pictureB_yatrans);
             this.Controls.Add(this.linkLabel_vk);
             this.Controls.Add(this.label_about);
