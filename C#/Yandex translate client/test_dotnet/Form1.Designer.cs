@@ -36,10 +36,12 @@ namespace test_dotnet
             this.cut_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copy_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paste_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.about_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTBres = new System.Windows.Forms.RichTextBox();
             this.contextMS_richTBres = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copy_RichTBres_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.about_RichTBres_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Lang_CB_1 = new System.Windows.Forms.ComboBox();
             this.Lang_CB_2 = new System.Windows.Forms.ComboBox();
@@ -57,7 +59,6 @@ namespace test_dotnet
             this.contextMS_richTBres.SuspendLayout();
             this.contextMenu.SuspendLayout();
             this.SuspendLayout();
-            //this.ShowInTaskbar = false;
             // 
             // button_url
             // 
@@ -93,9 +94,10 @@ namespace test_dotnet
             this.cut_ToolStripMenuItem,
             this.copy_ToolStripMenuItem,
             this.paste_ToolStripMenuItem,
+            this.jToolStripMenuItem,
             this.about_ToolStripMenuItem});
             this.contextMS_richTB.Name = "contextMS_richTB";
-            this.contextMS_richTB.Size = new System.Drawing.Size(150, 92);
+            this.contextMS_richTB.Size = new System.Drawing.Size(150, 98);
             // 
             // cut_ToolStripMenuItem
             // 
@@ -117,6 +119,11 @@ namespace test_dotnet
             this.paste_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.paste_ToolStripMenuItem.Text = "Вставить";
             this.paste_ToolStripMenuItem.Click += new System.EventHandler(this.paste_ToolStripMenuItem_Click);
+            // 
+            // jToolStripMenuItem
+            // 
+            this.jToolStripMenuItem.Name = "jToolStripMenuItem";
+            this.jToolStripMenuItem.Size = new System.Drawing.Size(146, 6);
             // 
             // about_ToolStripMenuItem
             // 
@@ -144,9 +151,10 @@ namespace test_dotnet
             // 
             this.contextMS_richTBres.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copy_RichTBres_ToolStripMenuItem,
+            this.gToolStripMenuItem,
             this.about_RichTBres_ToolStripMenuItem});
             this.contextMS_richTBres.Name = "contextMS_richTBres";
-            this.contextMS_richTBres.Size = new System.Drawing.Size(150, 48);
+            this.contextMS_richTBres.Size = new System.Drawing.Size(150, 54);
             // 
             // copy_RichTBres_ToolStripMenuItem
             // 
@@ -154,6 +162,11 @@ namespace test_dotnet
             this.copy_RichTBres_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
             this.copy_RichTBres_ToolStripMenuItem.Text = "Копировать";
             this.copy_RichTBres_ToolStripMenuItem.Click += new System.EventHandler(this.copy_RichTBres_ToolStripMenuItem_Click);
+            // 
+            // gToolStripMenuItem
+            // 
+            this.gToolStripMenuItem.Name = "gToolStripMenuItem";
+            this.gToolStripMenuItem.Size = new System.Drawing.Size(146, 6);
             // 
             // about_RichTBres_ToolStripMenuItem
             // 
@@ -305,18 +318,19 @@ namespace test_dotnet
             this.Controls.Add(this.richTBres);
             this.Controls.Add(this.richTB);
             this.Controls.Add(this.button_url);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "mainform";
-            this.Text = "Translate v1.4";
+            this.Text = "Translate v1.4.1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);
             this.contextMS_richTBres.ResumeLayout(false);
             this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
         }
 
 
@@ -345,6 +359,8 @@ namespace test_dotnet
         private System.Windows.Forms.ContextMenuStrip contextMS_richTBres;
         private System.Windows.Forms.ToolStripMenuItem copy_RichTBres_ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem about_RichTBres_ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator jToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator gToolStripMenuItem;
     }
 }
 
