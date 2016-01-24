@@ -12,18 +12,18 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 // ===================================================================================================================
-using System.Runtime.InteropServices;
 
 namespace test_dotnet
 {
     public partial class mainform : Form
     {
         public mainform() { InitializeComponent(); this.KeyPreview = true; }
+
+        #region Constant, Structure and Exception-class
+        /// <summary>
+        /// Basic constants, parameters
+        /// </summary>
         // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // Basic constant
         private const int RESULT_TEXT_POS = 36;
         private const string PAGE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
         private const string API_KEY = "trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3";
@@ -35,6 +35,7 @@ namespace test_dotnet
         // ===================================================================================================================
         private String GetQuery; // GET query from PAGE_URL
         private bool auto_detec_lang;
+        private bool not_changed_detect_label;
         // ===================================================================================================================
         // Basic Exeption from PAGE_URL
         public class API_Exception : System.Exception
@@ -49,16 +50,19 @@ namespace test_dotnet
                 throw new API_Exception(cur_code);
         }
         // ===================================================================================================================
+        #endregion
+
+        #region Translator code
+        /// <summary>
+        /// Basic functions for translate any text
+        /// </summary>
         // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // Translator code
-        private string get_result()
+        private String get_result()
         {
             return GetQuery.Substring(RESULT_TEXT_POS, GetQuery.Length - RESULT_TEXT_POS - 3); // 3 - удаляем 3 последних ненужных символа с результата
         }
-        
-        private string get_translate_dir()
+
+        private String get_translate_dir()
         {
             if (Lang_CB_1.SelectedIndex == 5)
             {
@@ -91,8 +95,6 @@ namespace test_dotnet
             return new StreamReader(UrlStream);
         }
         
-        private bool not_changed_detect_label;
-        
         public String get_translate()
         {
             auto_detec_lang = false;
@@ -109,57 +111,18 @@ namespace test_dotnet
             }
             return get_result().Replace("\\n", "\n").Replace("@1101", "\t");
         }
-        // ===================================================================================================================                            
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // Global hook
-        //Translator.globalKeyboardHook gkh = new Translator.globalKeyboardHook();
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            Lang_CB_1.Items.AddRange(Lang_name); Lang_CB_1.Items.Add("Определить язык");
-            Lang_CB_1.SelectedIndex = Lang_name.Length;
-
-            Lang_CB_2.Items.AddRange(Lang_name);
-            Lang_CB_2.SelectedIndex = 1;
-
-            Detect_label.Visible = false;
-            //Global HOOK
-            //gkh.HookedKeys.Add(Keys.F10);
-            //gkh.KeyUp += gkh_KeyUp;
-        }
-
-        /*private void gkh_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F10)
-            {
-                MessageBox.Show("test");
-            }
-        }/**/
-
-        protected override void OnKeyDown(KeyEventArgs e)
-        {
-            base.OnKeyDown(e);
-            if (e.KeyCode == Keys.F5 && e.Alt)
-            {
-                MessageBox.Show("Test");
-                e.Handled = true;
-            }
-        }
-        // ===================================================================================================================
-        private void button_url_Click(object sender, EventArgs e)
+        private String translate_text_from_richTB()
         {
             if (richTB.Text.Trim().Length >= 1)
             {
                 try
                 {
-                    richTBres.Text = get_translate();
+                    return richTBres.Text = get_translate();
                 }
-                catch (WebException error) 
+                catch (WebException error)
                 {
-                    MessageBox.Show(error.Message); 
+                    MessageBox.Show(error.Message);
                 }
                 catch (API_Exception except)
                 {
@@ -196,26 +159,136 @@ namespace test_dotnet
                             throw;
                     }
                 }
-                catch 
-                { 
-                    MessageBox.Show("Неизвестная ошибка.\nОбратитесь к разработчику.\nhttp://vk.com/id96996256"); 
+                catch
+                {
+                    MessageBox.Show("Неизвестная ошибка.\nОбратитесь к разработчику.\nhttp://vk.com/id96996256");
                 }
             }
-            else 
-            { 
-                MessageBox.Show("Может введете текст в левую половину? :)"); 
+            else
+            {
+                MessageBox.Show("Может введете текст в левую половину? :)");
             }
-            
+            return "";
         }
-        
+        // ===================================================================================================================                            
+        #endregion
+
+        #region HotKey register code
+        /// <summary>
+        /// WinAPI functions and const
+        /// </summary>
+        // ===================================================================================================================
+        [System.Runtime.InteropServices.DllImport("user32")] 
+        public static extern int RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        private const int MOD_ALT = 0x1;
+        private const int MOD_CONTROL = 0x2;
+        private const int MOD_SHIFT = 0x4;
+        private const int MOD_WIN = 0x8;
+        private const int WM_HOTKEY = 0x312;
+
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (m.Msg == WM_HOTKEY)
+            {
+                switch (m.WParam.ToInt32())
+                {
+                    case 1:
+                        if ((richTB.Text = Clipboard.GetText()).Length > 0)
+                        {
+                            System.Media.SystemSounds.Exclamation.Play();
+                            Clipboard.SetText(translate_text_from_richTB());
+                        }
+                        break;
+                    case 2:
+                        System.Media.SystemSounds.Asterisk.Play();
+                        reverse_lang();
+                        break;
+                }
+            }
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+            if (e.KeyCode == Keys.F1 && e.Alt && richTB.Text.Length > 0)
+            {
+                //System.Media.SystemSounds.Exclamation.Play(); //tuuu dum!
+                //System.Media.SystemSounds.Asterisk.Play(); //fruuum!
+                //System.Media.SystemSounds.Hand.Play(); //hong!
+                System.Media.SystemSounds.Beep.Play(); //teng!
+                //System.Media.SystemSounds.Question.Play(); //nothing :(
+                translate_text_from_richTB();
+                //e.Handled = true;
+            }
+        }
+        // ===================================================================================================================                            
+        #endregion
+
+        #region FormLoader and FormClosing
+        /// <summary>
+        /// Basic function of mainform
+        /// </summary>
+        // ===================================================================================================================
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Lang_CB_1.Items.AddRange(Lang_name); Lang_CB_1.Items.Add("Определить язык");
+            Lang_CB_1.SelectedIndex = Lang_name.Length;
+
+            Lang_CB_2.Items.AddRange(Lang_name);
+            Lang_CB_2.SelectedIndex = 1;
+
+            RegisterHotKey(this.Handle, 1, MOD_ALT, (int)Keys.F2);
+            RegisterHotKey(this.Handle, 2, MOD_ALT, (int)Keys.F3);
+
+            Detect_label.Visible = false;
+        }
+         
+        private void mainform_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            UnregisterHotKey(this.Handle, 1);
+            UnregisterHotKey(this.Handle, 2);
+        }
+        // ===================================================================================================================                            
+        #endregion
+
+        // ===================================================================================================================
+        private void button_url_Click(object sender, EventArgs e)
+        {
+            translate_text_from_richTB();
+        }
+
+        private void reverse_lang()
+        {
+            if (Lang_CB_1.SelectedIndex == Lang_CB_2.SelectedIndex)
+            {
+                switch (Lang_CB_1.SelectedIndex)
+                {
+                    case 0:
+                        Lang_CB_2.SelectedIndex++;
+                        break;
+                    case 1:
+                        Lang_CB_2.SelectedIndex--;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            else
+            {
+                if (Lang_CB_1.SelectedIndex == 5) Lang_CB_1.SelectedIndex = 0;
+                int temp = Lang_CB_1.SelectedIndex;
+                Lang_CB_1.SelectedIndex = Lang_CB_2.SelectedIndex;
+                Lang_CB_2.SelectedIndex = temp;
+            }
+        }
+
         private void button_reverse_Click(object sender, EventArgs e)
         {
-            if (Lang_CB_1.SelectedIndex == 5) Lang_CB_1.SelectedIndex = 0;
-            int temp = Lang_CB_1.SelectedIndex;
-            Lang_CB_1.SelectedIndex = Lang_CB_2.SelectedIndex;
-            Lang_CB_2.SelectedIndex = temp;
-        
-            //if Lang_CB_1.
+            reverse_lang();
         }
 
         private void button_clear_richTB_Click(object sender, EventArgs e)
@@ -299,10 +372,12 @@ namespace test_dotnet
                 button_url.Enabled = button_clear.Enabled = false;
         }
         // ===================================================================================================================
+        
+        #region KeyBoard emitation of Ctrl+C, Ctrl+V, Ctrl+X
+        /// <summary>
+        /// WinAPI functions
+        /// </summary>
         // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // KeyBoard emitation
         [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
         private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
@@ -344,8 +419,6 @@ namespace test_dotnet
             fdToolStripMenuItem1_Click(sender, e);
         }
         // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
-        // ===================================================================================================================
+        #endregion
     }
 }
