@@ -38,6 +38,7 @@ namespace test_dotnet
             // label_about
             // 
             this.label_about.AutoSize = true;
+            this.label_about.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label_about.Location = new System.Drawing.Point(12, 9);
             this.label_about.Name = "label_about";
             this.label_about.Size = new System.Drawing.Size(481, 169);
@@ -74,6 +75,7 @@ namespace test_dotnet
             this.Controls.Add(this.linkLabel_vk);
             this.Controls.Add(this.label_about);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "About";
