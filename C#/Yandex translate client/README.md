@@ -58,4 +58,11 @@ VERSION HISTORY
 
       3) Exclude globalKeyboardHook class
 
-      4) Added #region
+      4) Added #region's
+
+- ver 1.4.3
+
+      1) Added Hotkey info form
+
+      2) Replace and remodel #region's
+
