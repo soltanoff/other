@@ -37,17 +37,20 @@ namespace test_dotnet
             this.copy_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.paste_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.jToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
+            this.Hotkey_richTB_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.about_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.richTBres = new System.Windows.Forms.RichTextBox();
             this.contextMS_richTBres = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copy_RichTBres_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
+            this.Hotkey_richTBres_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.about_RichTBres_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Lang_CB_1 = new System.Windows.Forms.ComboBox();
             this.Lang_CB_2 = new System.Windows.Forms.ComboBox();
             this.button_reverse = new System.Windows.Forms.Button();
             this.button_clear = new System.Windows.Forms.Button();
             this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.Hotkey_toolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutTranslator = new System.Windows.Forms.ToolStripMenuItem();
             this.Detect_label = new System.Windows.Forms.Label();
             this.openFileD = new System.Windows.Forms.OpenFileDialog();
@@ -95,40 +98,48 @@ namespace test_dotnet
             this.copy_ToolStripMenuItem,
             this.paste_ToolStripMenuItem,
             this.jToolStripMenuItem,
+            this.Hotkey_richTB_ToolStripMenuItem,
             this.about_ToolStripMenuItem});
             this.contextMS_richTB.Name = "contextMS_richTB";
-            this.contextMS_richTB.Size = new System.Drawing.Size(150, 98);
+            this.contextMS_richTB.Size = new System.Drawing.Size(174, 120);
             // 
             // cut_ToolStripMenuItem
             // 
             this.cut_ToolStripMenuItem.Name = "cut_ToolStripMenuItem";
-            this.cut_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.cut_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.cut_ToolStripMenuItem.Text = "Вырезать";
             this.cut_ToolStripMenuItem.Click += new System.EventHandler(this.cut_ToolStripMenuItem_Click);
             // 
             // copy_ToolStripMenuItem
             // 
             this.copy_ToolStripMenuItem.Name = "copy_ToolStripMenuItem";
-            this.copy_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copy_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.copy_ToolStripMenuItem.Text = "Копировать";
             this.copy_ToolStripMenuItem.Click += new System.EventHandler(this.copy_ToolStripMenuItem_Click);
             // 
             // paste_ToolStripMenuItem
             // 
             this.paste_ToolStripMenuItem.Name = "paste_ToolStripMenuItem";
-            this.paste_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.paste_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.paste_ToolStripMenuItem.Text = "Вставить";
             this.paste_ToolStripMenuItem.Click += new System.EventHandler(this.paste_ToolStripMenuItem_Click);
             // 
             // jToolStripMenuItem
             // 
             this.jToolStripMenuItem.Name = "jToolStripMenuItem";
-            this.jToolStripMenuItem.Size = new System.Drawing.Size(146, 6);
+            this.jToolStripMenuItem.Size = new System.Drawing.Size(170, 6);
+            // 
+            // Hotkey_richTB_ToolStripMenuItem
+            // 
+            this.Hotkey_richTB_ToolStripMenuItem.Name = "Hotkey_richTB_ToolStripMenuItem";
+            this.Hotkey_richTB_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.Hotkey_richTB_ToolStripMenuItem.Text = "Горячие клавиши";
+            this.Hotkey_richTB_ToolStripMenuItem.Click += new System.EventHandler(this.Hotkey_richTB_ToolStripMenuItem_Click_1);
             // 
             // about_ToolStripMenuItem
             // 
             this.about_ToolStripMenuItem.Name = "about_ToolStripMenuItem";
-            this.about_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.about_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.about_ToolStripMenuItem.Text = "О программе";
             this.about_ToolStripMenuItem.Click += new System.EventHandler(this.about_ToolStripMenuItem_Click);
             // 
@@ -152,26 +163,34 @@ namespace test_dotnet
             this.contextMS_richTBres.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.copy_RichTBres_ToolStripMenuItem,
             this.gToolStripMenuItem,
+            this.Hotkey_richTBres_ToolStripMenuItem,
             this.about_RichTBres_ToolStripMenuItem});
             this.contextMS_richTBres.Name = "contextMS_richTBres";
-            this.contextMS_richTBres.Size = new System.Drawing.Size(150, 54);
+            this.contextMS_richTBres.Size = new System.Drawing.Size(174, 76);
             // 
             // copy_RichTBres_ToolStripMenuItem
             // 
             this.copy_RichTBres_ToolStripMenuItem.Name = "copy_RichTBres_ToolStripMenuItem";
-            this.copy_RichTBres_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copy_RichTBres_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.copy_RichTBres_ToolStripMenuItem.Text = "Копировать";
             this.copy_RichTBres_ToolStripMenuItem.Click += new System.EventHandler(this.copy_RichTBres_ToolStripMenuItem_Click);
             // 
             // gToolStripMenuItem
             // 
             this.gToolStripMenuItem.Name = "gToolStripMenuItem";
-            this.gToolStripMenuItem.Size = new System.Drawing.Size(146, 6);
+            this.gToolStripMenuItem.Size = new System.Drawing.Size(170, 6);
+            // 
+            // Hotkey_richTBres_ToolStripMenuItem
+            // 
+            this.Hotkey_richTBres_ToolStripMenuItem.Name = "Hotkey_richTBres_ToolStripMenuItem";
+            this.Hotkey_richTBres_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.Hotkey_richTBres_ToolStripMenuItem.Text = "Горячие клавиши";
+            this.Hotkey_richTBres_ToolStripMenuItem.Click += new System.EventHandler(this.Hotkey_richTBres_ToolStripMenuItem_Click);
             // 
             // about_RichTBres_ToolStripMenuItem
             // 
             this.about_RichTBres_ToolStripMenuItem.Name = "about_RichTBres_ToolStripMenuItem";
-            this.about_RichTBres_ToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.about_RichTBres_ToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
             this.about_RichTBres_ToolStripMenuItem.Text = "О программе";
             this.about_RichTBres_ToolStripMenuItem.Click += new System.EventHandler(this.about_RichTBres_ToolStripMenuItem_Click);
             // 
@@ -227,14 +246,22 @@ namespace test_dotnet
             // contextMenu
             // 
             this.contextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Hotkey_toolStripMenuItem,
             this.aboutTranslator});
             this.contextMenu.Name = "contextMenuStrip1";
-            this.contextMenu.Size = new System.Drawing.Size(150, 26);
+            this.contextMenu.Size = new System.Drawing.Size(174, 48);
+            // 
+            // Hotkey_toolStripMenuItem
+            // 
+            this.Hotkey_toolStripMenuItem.Name = "Hotkey_toolStripMenuItem";
+            this.Hotkey_toolStripMenuItem.Size = new System.Drawing.Size(173, 22);
+            this.Hotkey_toolStripMenuItem.Text = "Горячие клавиши";
+            this.Hotkey_toolStripMenuItem.Click += new System.EventHandler(this.Hotkey_toolStripMenuItem_Click);
             // 
             // aboutTranslator
             // 
             this.aboutTranslator.Name = "aboutTranslator";
-            this.aboutTranslator.Size = new System.Drawing.Size(149, 22);
+            this.aboutTranslator.Size = new System.Drawing.Size(173, 22);
             this.aboutTranslator.Text = "О программе";
             this.aboutTranslator.Click += new System.EventHandler(this.fdToolStripMenuItem1_Click);
             // 
@@ -323,14 +350,15 @@ namespace test_dotnet
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "mainform";
-            this.Text = "Translate v1.4.1";
+            this.Text = "Translate v1.4.2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);
             this.contextMS_richTBres.ResumeLayout(false);
             this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
+
         }
 
 
@@ -361,6 +389,9 @@ namespace test_dotnet
         private System.Windows.Forms.ToolStripMenuItem about_RichTBres_ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator jToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator gToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Hotkey_toolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Hotkey_richTBres_ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem Hotkey_richTB_ToolStripMenuItem;
     }
 }
 

@@ -254,6 +254,10 @@ namespace test_dotnet
         // ===================================================================================================================                            
         #endregion
 
+        #region Basic buttons and their funtions
+        /// <summary>
+        /// Basic buttons on mainform
+        /// </summary>
         // ===================================================================================================================
         private void button_url_Click(object sender, EventArgs e)
         {
@@ -296,6 +300,72 @@ namespace test_dotnet
             richTBres.Text = richTB.Text = "";
         }
 
+        private void button_clipboard_cpy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(richTBres.Text);
+            MessageBox.Show("Перевод скопирован в буфер обмена.");
+        }
+
+        private void button_safe_Click(object sender, EventArgs e)
+        {
+            saveFileD.ShowDialog();
+        }
+
+        private void read_file_button_Click(object sender, EventArgs e)
+        {
+            openFileD.ShowDialog();
+        }
+        // ===================================================================================================================
+        #endregion
+
+        #region KeyBoard emitation of Ctrl+C, Ctrl+V, Ctrl+X
+        /// <summary>
+        /// WinAPI functions
+        /// </summary>
+        // ===================================================================================================================
+        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
+
+        private static void SendCtrlhotKey(char key)
+        {
+            keybd_event(0x11, 0, 0, 0);
+            keybd_event((byte)key, 0, 0, 0);
+            keybd_event((byte)key, 0, 0x2, 0);
+            keybd_event(0x11, 0, 0x2, 0);
+        }
+
+        private void copy_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SendCtrlhotKey('C');
+        }
+
+        private void paste_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SendCtrlhotKey('V');
+        }
+
+        private void about_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fdToolStripMenuItem1_Click(sender, e);
+        }
+
+        private void cut_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SendCtrlhotKey('X');
+        }
+
+        private void copy_RichTBres_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SendCtrlhotKey('C');
+        }
+
+        private void about_RichTBres_ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            fdToolStripMenuItem1_Click(sender, e);
+        }
+        // ===================================================================================================================
+        #endregion
+
         private void Lang_CB_1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!not_changed_detect_label)
@@ -325,16 +395,6 @@ namespace test_dotnet
             }
         }
 
-        private void read_file_button_Click(object sender, EventArgs e)
-        {
-            openFileD.ShowDialog();
-        }
-
-        private void button_safe_Click(object sender, EventArgs e)
-        {
-            saveFileD.ShowDialog();
-        }
-
         private void saveFileD_FileOk(object sender, CancelEventArgs e)
         {
             try
@@ -348,12 +408,6 @@ namespace test_dotnet
             {
                 MessageBox.Show("Ошибка записи файла!");
             }
-        }
-
-        private void button_clipboard_cpy_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(richTBres.Text);
-            MessageBox.Show("Перевод скопирован в буфер обмена.");
         }
 
         private void richTBres_TextChanged(object sender, EventArgs e)
@@ -371,54 +425,22 @@ namespace test_dotnet
             else
                 button_url.Enabled = button_clear.Enabled = false;
         }
-        // ===================================================================================================================
-        
-        #region KeyBoard emitation of Ctrl+C, Ctrl+V, Ctrl+X
-        /// <summary>
-        /// WinAPI functions
-        /// </summary>
-        // ===================================================================================================================
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
-        private static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, int dwExtraInfo);
 
-        private static void SendCtrlhotKey(char key)
+        private void Hotkey_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            keybd_event(0x11, 0, 0, 0);
-            keybd_event((byte)key, 0, 0, 0);
-            keybd_event((byte)key, 0, 0x2, 0);
-            keybd_event(0x11, 0, 0x2, 0);
+            Translator.HotkeyInfo F = new Translator.HotkeyInfo();
+            F.Show();
         }
 
-        private void copy_ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void Hotkey_richTBres_ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SendCtrlhotKey('C');
+            Hotkey_toolStripMenuItem_Click(sender, e);
         }
 
-        private void paste_ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void Hotkey_richTB_ToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            SendCtrlhotKey('V');
-        }
-
-        private void about_ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fdToolStripMenuItem1_Click(sender, e); 
-        }
-
-        private void cut_ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SendCtrlhotKey('X');
-        }
-
-        private void copy_RichTBres_ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            SendCtrlhotKey('C');
-        }
-
-        private void about_RichTBres_ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            fdToolStripMenuItem1_Click(sender, e);
+            Hotkey_toolStripMenuItem_Click(sender, e);
         }
         // ===================================================================================================================
-        #endregion
     }
 }
