@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test_dotnet", "test_dotnet\test_dotnet.csproj", "{CAB9FB54-1D12-42FC-BD4B-48B0ED03F217}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Translator", "test_dotnet\Translator.csproj", "{CAB9FB54-1D12-42FC-BD4B-48B0ED03F217}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

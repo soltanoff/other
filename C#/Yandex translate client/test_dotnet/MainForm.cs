@@ -1,4 +1,6 @@
 using System;
+using System.Net;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,22 +10,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-// ===================================================================================================================   
-using System.Net;
-using System.IO;
-// ===================================================================================================================
 
-namespace test_dotnet
+
+namespace Translator
 {
-    public partial class mainform : Form
+    public partial class MainForm : Form
     {
-        public mainform() { InitializeComponent(); this.KeyPreview = true; }
+        public MainForm() { InitializeComponent(); this.KeyPreview = true; }
 
         #region Constant, Structure and Exception-class
         /// <summary>
         /// Basic constants, parameters
         /// </summary>
         // ===================================================================================================================
+        HotkeyInfo HotkeyInfo_form = new HotkeyInfo();
         private const int RESULT_TEXT_POS = 36;
         private const string PAGE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
         private const string API_KEY = "trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3";
@@ -223,6 +223,25 @@ namespace test_dotnet
                 translate_text_from_richTB();
                 //e.Handled = true;
             }
+            else
+            {
+                if (!HotkeyInfo_form.hotkey_checkBox.Checked)
+                {
+                    if (e.KeyCode == Keys.F2 && e.Alt && (richTB.Text = Clipboard.GetText()).Length > 0)
+                    {
+                        System.Media.SystemSounds.Exclamation.Play();
+                        Clipboard.SetText(translate_text_from_richTB());
+                    }
+                    else
+                    {
+                        if (e.KeyCode == Keys.F3 && e.Alt && richTB.Text.Length > 0)
+                        {
+                            System.Media.SystemSounds.Asterisk.Play();
+                            reverse_lang();
+                        }
+                    }
+                }
+            }
         }
         // ===================================================================================================================                            
         #endregion
@@ -240,16 +259,18 @@ namespace test_dotnet
             Lang_CB_2.Items.AddRange(Lang_name);
             Lang_CB_2.SelectedIndex = 1;
 
-            RegisterHotKey(this.Handle, 1, MOD_ALT, (int)Keys.F2);
-            RegisterHotKey(this.Handle, 2, MOD_ALT, (int)Keys.F3);
-
             Detect_label.Visible = false;
+
+            HotkeyInfo_form.hotkey_checkBox.CheckedChanged += new System.EventHandler(hotkey_CB_CheckedChanged);
         }
          
         private void mainform_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            UnregisterHotKey(this.Handle, 1);
-            UnregisterHotKey(this.Handle, 2);
+            if (HotkeyInfo_form.hotkey_checkBox.Checked)
+            {
+                UnregisterHotKey(this.Handle, 1);
+                UnregisterHotKey(this.Handle, 2);
+            }
         }
         // ===================================================================================================================                            
         #endregion
@@ -292,6 +313,7 @@ namespace test_dotnet
 
         private void button_reverse_Click(object sender, EventArgs e)
         {
+            if (HotkeyInfo_form.hotkey_checkBox.Checked) MessageBox.Show("zii");
             reverse_lang();
         }
 
@@ -428,8 +450,7 @@ namespace test_dotnet
 
         private void Hotkey_toolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Translator.HotkeyInfo F = new Translator.HotkeyInfo();
-            F.Show();
+            HotkeyInfo_form.Show();
         }
 
         private void Hotkey_richTBres_ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -440,6 +461,21 @@ namespace test_dotnet
         private void Hotkey_richTB_ToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             Hotkey_toolStripMenuItem_Click(sender, e);
+        }
+
+        public void hotkey_CB_CheckedChanged(object sender, EventArgs e)
+        {
+            if (HotkeyInfo_form.hotkey_checkBox.Checked)
+            {
+                RegisterHotKey(this.Handle, 1, MOD_ALT, (int)Keys.F2);
+                RegisterHotKey(this.Handle, 2, MOD_ALT, (int)Keys.F3);
+            }
+            else
+            {
+                UnregisterHotKey(this.Handle, 1);
+                UnregisterHotKey(this.Handle, 2);
+            }
+
         }
         // ===================================================================================================================
     }

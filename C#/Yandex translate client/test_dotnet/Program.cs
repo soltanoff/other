@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace test_dotnet
+namespace Translator
 {
     static class Program
     {
@@ -18,7 +18,7 @@ namespace test_dotnet
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new mainform());
+                Application.Run(new MainForm());
             }
             catch
             {

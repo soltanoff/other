@@ -1,6 +1,6 @@
-namespace test_dotnet
+namespace Translator
 {
-    partial class mainform
+    partial class MainForm
     {
         /// <summary>
         /// Требуется переменная конструктора.
@@ -29,7 +29,7 @@ namespace test_dotnet
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(mainform));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.button_url = new System.Windows.Forms.Button();
             this.richTB = new System.Windows.Forms.RichTextBox();
             this.contextMS_richTB = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -350,7 +350,7 @@ namespace test_dotnet
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "mainform";
-            this.Text = "Translate v1.4.2";
+            this.Text = "Translate v1.5";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);

@@ -1,4 +1,4 @@
-namespace test_dotnet
+namespace Translator
 {
     partial class About
     {
@@ -81,11 +81,9 @@ namespace test_dotnet
             this.Name = "About";
             this.Text = "About";
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.About_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureB_yatrans)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
