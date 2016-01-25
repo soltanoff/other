@@ -60,9 +60,17 @@ VERSION HISTORY
 
       4) Added #region's
 
-- ver 1.4.3
+- ver 1.4.2
 
       1) Added Hotkey info form
 
       2) Replace and remodel #region's
+
+- ver 1.5
+
+      1) Added checkbox to configure access to a global catching of keyboard shortcuts.
+
+      2) Renamed some classes, namespaces and functions
+
+      3) Fixed a bug associated with long handling Web exceptions
 
