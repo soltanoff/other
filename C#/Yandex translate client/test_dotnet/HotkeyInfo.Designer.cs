@@ -32,6 +32,7 @@
             this.Hotkey_info_label = new System.Windows.Forms.Label();
             this.label_starinfo = new System.Windows.Forms.Label();
             this.pictureBox_yatranslate_mini = new System.Windows.Forms.PictureBox();
+            this.hotkey_checkBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_yatranslate_mini)).BeginInit();
             this.SuspendLayout();
             // 
@@ -44,7 +45,6 @@
             this.Hotkey_info_label.Size = new System.Drawing.Size(474, 65);
             this.Hotkey_info_label.TabIndex = 0;
             this.Hotkey_info_label.Text = resources.GetString("Hotkey_info_label.Text");
-            this.Hotkey_info_label.Click += new System.EventHandler(this.Hotkey_info_label_Click);
             // 
             // label_starinfo
             // 
@@ -66,11 +66,22 @@
             this.pictureBox_yatranslate_mini.TabIndex = 2;
             this.pictureBox_yatranslate_mini.TabStop = false;
             // 
+            // hotkey_checkBox
+            // 
+            this.hotkey_checkBox.AutoSize = true;
+            this.hotkey_checkBox.Location = new System.Drawing.Point(12, 85);
+            this.hotkey_checkBox.Name = "hotkey_checkBox";
+            this.hotkey_checkBox.Size = new System.Drawing.Size(238, 17);
+            this.hotkey_checkBox.TabIndex = 3;
+            this.hotkey_checkBox.Text = "Активировать глобальный отлов клавиш*";
+            this.hotkey_checkBox.UseVisualStyleBackColor = true;
+            // 
             // HotkeyInfo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 127);
+            this.Controls.Add(this.hotkey_checkBox);
             this.Controls.Add(this.pictureBox_yatranslate_mini);
             this.Controls.Add(this.label_starinfo);
             this.Controls.Add(this.Hotkey_info_label);
@@ -81,6 +92,7 @@
             this.Name = "HotkeyInfo";
             this.Text = "Hotkey info";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HotkeyInfo_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_yatranslate_mini)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -92,5 +104,6 @@
         private System.Windows.Forms.Label Hotkey_info_label;
         private System.Windows.Forms.Label label_starinfo;
         private System.Windows.Forms.PictureBox pictureBox_yatranslate_mini;
+        public System.Windows.Forms.CheckBox hotkey_checkBox;
     }
 }
