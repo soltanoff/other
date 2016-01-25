@@ -60,7 +60,7 @@ VERSION HISTORY
 
       4) Added #region's
 
-- ver 1.4.3
+- ver 1.4.2
 
       1) Added Hotkey info form
 
