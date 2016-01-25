@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label_about.Text" xml:space="preserve">
-    <value>Translator v1.4.2
+    <value>Translator v1.5
 
 Простой клиент сервиса Яндекс.Переводчик.
 Данная программа позволяет взаимодействовать с интернет-сервисом, предоставляющий 
