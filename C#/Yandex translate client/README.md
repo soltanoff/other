@@ -38,24 +38,24 @@ VERSION HISTORY
 
 - ver 1.3
 
-1) Added "About" form
+      1) Added "About" form
 
-2) Fixed output of special characters
+      2) Fixed output of special characters
 
-3) Add new background
+      3) Add new background
 
 - ver 1.4
 
-1) Fixed output of special and arithmetic characters
+      1) Fixed output of special and arithmetic characters
 
-2) Include globalHookKey class
+      2) Include globalHookKey class
 
 - ver 1.4.1
 
-1) Added double buffering for background picture
+      1) Added double buffering for background picture
 
-2) Added HotKey hook (with WinAPI)
+      2) Added HotKey hook (with WinAPI)
 
-3) Exclude globalHookKey class
+      3) Exclude globalHookKey class
 
-4) Added #region
+      4) Added #region
