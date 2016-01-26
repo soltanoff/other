@@ -486,16 +486,35 @@ namespace Translator
         {
             if (HotkeyInfo_form.hotkey_checkBox.Checked)
             {
-                RegisterHotKey(this.Handle, 1, MOD_CONTROL, (int)Keys.F2);
-                RegisterHotKey(this.Handle, 2, MOD_CONTROL, (int)Keys.F3);
+                RegisterHotKey(Handle, 1, MOD_CONTROL, (int)Keys.F2);
+                RegisterHotKey(Handle, 2, MOD_CONTROL, (int)Keys.F3);
             }
             else
             {
-                UnregisterHotKey(this.Handle, 1);
-                UnregisterHotKey(this.Handle, 2);
+                UnregisterHotKey(Handle, 1);
+                UnregisterHotKey(Handle, 2);
             }
+        }
 
+        public void MainForm_MinimumSizeChanged(object sender, EventArgs e)
+        {
+            if (ShowInTaskbar) 
+                translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
+            
+            ShowInTaskbar = !ShowInTaskbar;
         }
         // ===================================================================================================================
+        private void NI_menuItem_Click(object Sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void notifyIcon_DoubleClick(object Sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+                WindowState = FormWindowState.Normal;
+
+            Activate();
+        }
     }
 }

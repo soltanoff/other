@@ -327,9 +327,47 @@ namespace Translator
             this.button_clipboard_cpy.Text = "Копировать всё";
             this.button_clipboard_cpy.UseVisualStyleBackColor = true;
             this.button_clipboard_cpy.Click += new System.EventHandler(this.button_clipboard_cpy_Click);
-            // 
+            //
+            // NI_menuItem_close
+            //
+            this.NI_menuItem_close = new System.Windows.Forms.MenuItem();
+            this.NI_menuItem_close.Index = 0;
+            this.NI_menuItem_close.Text = "Закрыть";
+            this.NI_menuItem_close.Click += new System.EventHandler(this.NI_menuItem_Click);
+            //
+            // NI_menuItem_hotkey
+            //
+            this.NI_menuItem_hotkey = new System.Windows.Forms.MenuItem();
+            this.NI_menuItem_hotkey.Index = 0;
+            this.NI_menuItem_hotkey.Text = "Горячие клавиши";
+            this.NI_menuItem_hotkey.Click += new System.EventHandler(this.Hotkey_toolStripMenuItem_Click);
+            //
+            // NI_menuItem_about
+            //
+            this.NI_menuItem_about = new System.Windows.Forms.MenuItem();
+            this.NI_menuItem_about.Index = 0;
+            this.NI_menuItem_about.Text = "О программе";
+            this.NI_menuItem_about.Click += new System.EventHandler(this.fdToolStripMenuItem1_Click);
+            //
+            // NI_contextMenu
+            //
+            this.NI_contextMenu = new System.Windows.Forms.ContextMenu();
+            this.NI_contextMenu.MenuItems.Add(this.NI_menuItem_hotkey);
+            this.NI_contextMenu.MenuItems.Add(this.NI_menuItem_about);
+            this.NI_contextMenu.MenuItems.Add("-");
+            this.NI_contextMenu.MenuItems.Add(this.NI_menuItem_close);
+            //
+            // translator_notifyIcon
+            //
+            this.translator_notifyIcon = new System.Windows.Forms.NotifyIcon();
+            this.translator_notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.translator_notifyIcon.ContextMenu = this.NI_contextMenu;
+            this.translator_notifyIcon.Visible = true;
+            this.translator_notifyIcon.Text = "Translate v1.5";
+            this.translator_notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
+            //
             // MainForm
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
@@ -353,6 +391,7 @@ namespace Translator
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.Text = "Translate v1.5";
+            this.SizeChanged += MainForm_MinimumSizeChanged;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);
@@ -360,9 +399,7 @@ namespace Translator
             this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-
 
         #endregion
 
@@ -394,6 +431,11 @@ namespace Translator
         private System.Windows.Forms.ToolStripMenuItem Hotkey_toolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Hotkey_richTBres_ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem Hotkey_richTB_ToolStripMenuItem;
+        private System.Windows.Forms.NotifyIcon translator_notifyIcon;
+        private System.Windows.Forms.ContextMenu NI_contextMenu;
+        private System.Windows.Forms.MenuItem NI_menuItem_close;
+        private System.Windows.Forms.MenuItem NI_menuItem_about;
+        private System.Windows.Forms.MenuItem NI_menuItem_hotkey;
     }
 }
 
