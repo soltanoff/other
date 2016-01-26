@@ -15,6 +15,16 @@ The client is written in C# using an API Translator.
 
 About API Translator - https://tech.yandex.ru/translate/
 
+- Hotkeys:
+
+      1) Ctrl+F1 - to perform the translation
+ 
+      2)* Ctrl+F2 - to perform the translation of the text from the clipboard and places the result there
+
+      3)* Ctrl+F3 - to change the direction of translation (Ru <-> Eng)
+
+      * - may be executed when an inactive application window
+
 VERSION HISTORY
 ---------
 
@@ -74,3 +84,4 @@ VERSION HISTORY
 
       3) Fixed a bug associated with long handling Web exceptions
 
+      4) Added or auto-detection of font sizes depending on the number of lines of text.
