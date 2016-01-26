@@ -272,6 +272,8 @@ namespace Translator
 
             richTB.Font = richTBres.Font = Large_font_richTB = new Font(richTB.Font.FontFamily, LARGE_FONT_SIZE);
             Small_font_richTB = new Font(richTB.Font.FontFamily, SMALL_FONT_SIZE);
+
+            translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
         }
          
         private void mainform_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -495,15 +497,22 @@ namespace Translator
                 UnregisterHotKey(Handle, 2);
             }
         }
+        // ===================================================================================================================
+        bool to_minimum = false;
 
         public void MainForm_MinimumSizeChanged(object sender, EventArgs e)
         {
-            if (ShowInTaskbar) 
+            if (to_minimum)
+            {
+                to_minimum = Visible = false;
                 translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
-            
-            ShowInTaskbar = !ShowInTaskbar;
+            }
+            else
+            {
+                to_minimum = true;
+            }
         }
-        // ===================================================================================================================
+
         private void NI_menuItem_Click(object Sender, EventArgs e)
         {
             Close();
@@ -511,8 +520,8 @@ namespace Translator
 
         private void notifyIcon_DoubleClick(object Sender, EventArgs e)
         {
-            if (WindowState == FormWindowState.Minimized)
-                WindowState = FormWindowState.Normal;
+            Show();
+            WindowState = FormWindowState.Normal;
 
             Activate();
         }
