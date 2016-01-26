@@ -84,6 +84,7 @@ namespace Translator
             this.richTB.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.richTB.ContextMenuStrip = this.contextMS_richTB;
+            this.richTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTB.Location = new System.Drawing.Point(12, 50);
             this.richTB.Name = "richTB";
             this.richTB.Size = new System.Drawing.Size(317, 261);
@@ -150,6 +151,7 @@ namespace Translator
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.richTBres.ContextMenuStrip = this.contextMS_richTBres;
+            this.richTBres.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTBres.Location = new System.Drawing.Point(375, 50);
             this.richTBres.Name = "richTBres";
             this.richTBres.ReadOnly = true;
@@ -326,7 +328,7 @@ namespace Translator
             this.button_clipboard_cpy.UseVisualStyleBackColor = true;
             this.button_clipboard_cpy.Click += new System.EventHandler(this.button_clipboard_cpy_Click);
             // 
-            // mainform
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -349,7 +351,7 @@ namespace Translator
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "mainform";
+            this.Name = "MainForm";
             this.Text = "Translate v1.5";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
             this.Load += new System.EventHandler(this.Form1_Load);

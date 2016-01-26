@@ -10,8 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
-
 namespace Translator
 {
     public partial class MainForm : Form
@@ -23,7 +21,10 @@ namespace Translator
         /// Basic constants, parameters
         /// </summary>
         // ===================================================================================================================
-        HotkeyInfo HotkeyInfo_form = new HotkeyInfo();
+        private const int MAX_AMOUNT_NEXTLINES = 9;
+        private const int MAX_LENGTH_TEXT = 258;
+        private const int LARGE_FONT_SIZE = 14;
+        private const int SMALL_FONT_SIZE = 8;
         private const int RESULT_TEXT_POS = 36;
         private const string PAGE_URL = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=";
         private const string API_KEY = "trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3";
@@ -34,7 +35,10 @@ namespace Translator
         private const string ENCODE_NAME = "windows-1251";
         // ===================================================================================================================
         private String GetQuery; // GET query from PAGE_URL
+        private HotkeyInfo HotkeyInfo_form;
         private bool auto_detec_lang;
+        private Font Small_font_richTB;
+        private Font Large_font_richTB;
         private bool not_changed_detect_label;
         // ===================================================================================================================
         // Basic Exeption from PAGE_URL
@@ -182,10 +186,10 @@ namespace Translator
         public static extern int RegisterHotKey(IntPtr hwnd, int id, int fsModifiers, int vk);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-        private const int MOD_ALT = 0x1;
+        //private const int MOD_ALT = 0x1;
         private const int MOD_CONTROL = 0x2;
-        private const int MOD_SHIFT = 0x4;
-        private const int MOD_WIN = 0x8;
+        //private const int MOD_SHIFT = 0x4;
+        //private const int MOD_WIN = 0x8;
         private const int WM_HOTKEY = 0x312;
 
         protected override void WndProc(ref Message m)
@@ -213,7 +217,7 @@ namespace Translator
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
-            if (e.KeyCode == Keys.F1 && e.Alt && richTB.Text.Length > 0)
+            if (e.KeyCode == Keys.F1 && e.Control && richTB.Text.Length > 0)
             {
                 //System.Media.SystemSounds.Exclamation.Play(); //tuuu dum!
                 //System.Media.SystemSounds.Asterisk.Play(); //fruuum!
@@ -227,14 +231,14 @@ namespace Translator
             {
                 if (!HotkeyInfo_form.hotkey_checkBox.Checked)
                 {
-                    if (e.KeyCode == Keys.F2 && e.Alt && (richTB.Text = Clipboard.GetText()).Length > 0)
+                    if (e.KeyCode == Keys.F2 && e.Control && (richTB.Text = Clipboard.GetText()).Length > 0)
                     {
                         System.Media.SystemSounds.Exclamation.Play();
                         Clipboard.SetText(translate_text_from_richTB());
                     }
                     else
                     {
-                        if (e.KeyCode == Keys.F3 && e.Alt && richTB.Text.Length > 0)
+                        if (e.KeyCode == Keys.F3 && e.Control && richTB.Text.Length > 0)
                         {
                             System.Media.SystemSounds.Asterisk.Play();
                             reverse_lang();
@@ -261,7 +265,11 @@ namespace Translator
 
             Detect_label.Visible = false;
 
+            HotkeyInfo_form = new HotkeyInfo();
             HotkeyInfo_form.hotkey_checkBox.CheckedChanged += new System.EventHandler(hotkey_CB_CheckedChanged);
+
+            richTB.Font = richTBres.Font = Large_font_richTB = new Font(richTB.Font.FontFamily, LARGE_FONT_SIZE);
+            Small_font_richTB = new Font(richTB.Font.FontFamily, SMALL_FONT_SIZE);
         }
          
         private void mainform_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -440,8 +448,18 @@ namespace Translator
                 button_clipboard_cpy.Enabled = button_safe.Enabled = false;
         }
 
+        private int get_amount_nextlines()
+        {
+            return (int)(new System.Text.RegularExpressions.Regex("\n").Matches(richTB.Text).Count);
+        }
+
         private void richTB_TextChanged(object sender, EventArgs e)
         {
+            if (get_amount_nextlines() > MAX_AMOUNT_NEXTLINES || richTB.Text.Length > MAX_LENGTH_TEXT)
+                richTBres.Font = richTB.Font = Small_font_richTB;
+            else
+                richTBres.Font = richTB.Font = Large_font_richTB;
+
             if (richTB.Text.Length > 0)
                 button_url.Enabled = button_clear.Enabled = true;
             else
@@ -467,8 +485,8 @@ namespace Translator
         {
             if (HotkeyInfo_form.hotkey_checkBox.Checked)
             {
-                RegisterHotKey(this.Handle, 1, MOD_ALT, (int)Keys.F2);
-                RegisterHotKey(this.Handle, 2, MOD_ALT, (int)Keys.F3);
+                RegisterHotKey(this.Handle, 1, MOD_CONTROL, (int)Keys.F2);
+                RegisterHotKey(this.Handle, 2, MOD_CONTROL, (int)Keys.F3);
             }
             else
             {
