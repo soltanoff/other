@@ -321,7 +321,6 @@ namespace Translator
 
         private void button_reverse_Click(object sender, EventArgs e)
         {
-            if (HotkeyInfo_form.hotkey_checkBox.Checked) MessageBox.Show("zii");
             reverse_lang();
         }
 
