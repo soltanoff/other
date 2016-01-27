@@ -23,7 +23,7 @@ About API Translator - https://tech.yandex.ru/translate/
 
       3)* Ctrl+F3 - to change the direction of translation (Ru <-> Eng)
 
-      * - may be executed when an inactive application window
+      (*) - may be executed when an inactive application window
 
 VERSION HISTORY
 ---------
