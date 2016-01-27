@@ -316,10 +316,28 @@ namespace Translator
             }
             else
             {
-                if (Lang_CB_1.SelectedIndex == 5) Lang_CB_1.SelectedIndex = 0;
+                if (Lang_CB_1.SelectedIndex == 5)
+                {
+                    switch (Lang_CB_2.SelectedIndex)
+                    {
+                        case 0:
+                            Lang_CB_1.SelectedIndex = 1;
+                            break;
+                        case 1:
+                            Lang_CB_1.SelectedIndex = 0;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 int temp = Lang_CB_1.SelectedIndex;
                 Lang_CB_1.SelectedIndex = Lang_CB_2.SelectedIndex;
                 Lang_CB_2.SelectedIndex = temp;
+            }
+            if (!to_minimum)
+            {
+                if (Lang_CB_1.SelectedIndex == 1) Lang_CB_1.SelectedIndex = Lang_name.Length;
+                translator_notifyIcon.ShowBalloonTip(1, "Направление перевода:", Lang_CB_1.Text + " -> " + Lang_CB_2.Text, ToolTipIcon.Info);
             }
         }
 
