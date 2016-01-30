@@ -84,6 +84,7 @@ namespace Translator
             ((System.ComponentModel.ISupportInitialize)(this.pictureB_yatrans)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

@@ -87,8 +87,10 @@ namespace Translator
             // 
             this.richTB.AcceptsTab = true;
             this.richTB.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.richTB.BackColor = System.Drawing.SystemColors.Window;
+            this.richTB.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTB.ContextMenuStrip = this.contextMS_richTB;
-            this.richTB.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTB.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTB.Location = new System.Drawing.Point(12, 50);
             this.richTB.Name = "richTB";
             this.richTB.Size = new System.Drawing.Size(317, 261);
@@ -152,8 +154,10 @@ namespace Translator
             // 
             this.richTBres.AcceptsTab = true;
             this.richTBres.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.richTBres.BackColor = System.Drawing.SystemColors.Window;
+            this.richTBres.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTBres.ContextMenuStrip = this.contextMS_richTBres;
-            this.richTBres.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTBres.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTBres.Location = new System.Drawing.Point(375, 50);
             this.richTBres.Name = "richTBres";
             this.richTBres.ReadOnly = true;
@@ -202,11 +206,11 @@ namespace Translator
             // 
             this.Lang_CB_1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Lang_CB_1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Lang_CB_1.Font = new System.Drawing.Font("Palatino Linotype", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Lang_CB_1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Lang_CB_1.FormattingEnabled = true;
             this.Lang_CB_1.Location = new System.Drawing.Point(208, 22);
             this.Lang_CB_1.Name = "Lang_CB_1";
-            this.Lang_CB_1.Size = new System.Drawing.Size(121, 24);
+            this.Lang_CB_1.Size = new System.Drawing.Size(121, 21);
             this.Lang_CB_1.TabIndex = 5;
             this.Lang_CB_1.Tag = "";
             this.Lang_CB_1.SelectedIndexChanged += new System.EventHandler(this.Lang_CB_1_SelectedIndexChanged);
@@ -215,12 +219,12 @@ namespace Translator
             // 
             this.Lang_CB_2.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Lang_CB_2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Lang_CB_2.Font = new System.Drawing.Font("Palatino Linotype", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Lang_CB_2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Lang_CB_2.FormattingEnabled = true;
-            this.Lang_CB_2.Location = new System.Drawing.Point(375, 22);
+            this.Lang_CB_2.Location = new System.Drawing.Point(375, 23);
             this.Lang_CB_2.Name = "Lang_CB_2";
             this.Lang_CB_2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.Lang_CB_2.Size = new System.Drawing.Size(121, 24);
+            this.Lang_CB_2.Size = new System.Drawing.Size(121, 21);
             this.Lang_CB_2.TabIndex = 6;
             // 
             // button_reverse
@@ -274,7 +278,7 @@ namespace Translator
             this.Detect_label.AutoSize = true;
             this.Detect_label.BackColor = System.Drawing.Color.Transparent;
             this.Detect_label.Font = new System.Drawing.Font("Palatino Linotype", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Detect_label.ForeColor = System.Drawing.Color.OrangeRed;
+            this.Detect_label.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.Detect_label.Location = new System.Drawing.Point(143, 3);
             this.Detect_label.Name = "Detect_label";
             this.Detect_label.Size = new System.Drawing.Size(186, 16);
@@ -288,7 +292,7 @@ namespace Translator
             // 
             // read_file_button
             // 
-            this.read_file_button.Font = new System.Drawing.Font("Palatino Linotype", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.read_file_button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.read_file_button.Location = new System.Drawing.Point(40, 21);
             this.read_file_button.Name = "read_file_button";
             this.read_file_button.RightToLeft = System.Windows.Forms.RightToLeft.No;
@@ -309,7 +313,7 @@ namespace Translator
             // button_safe
             // 
             this.button_safe.Enabled = false;
-            this.button_safe.Font = new System.Drawing.Font("Palatino Linotype", 8.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_safe.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_safe.Location = new System.Drawing.Point(617, 20);
             this.button_safe.Name = "button_safe";
             this.button_safe.Size = new System.Drawing.Size(75, 26);
@@ -321,7 +325,7 @@ namespace Translator
             // button_clipboard_cpy
             // 
             this.button_clipboard_cpy.Enabled = false;
-            this.button_clipboard_cpy.Font = new System.Drawing.Font("Palatino Linotype", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.button_clipboard_cpy.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button_clipboard_cpy.Location = new System.Drawing.Point(514, 20);
             this.button_clipboard_cpy.Name = "button_clipboard_cpy";
             this.button_clipboard_cpy.Size = new System.Drawing.Size(97, 26);
@@ -359,17 +363,16 @@ namespace Translator
             // 
             this.translator_notifyIcon.ContextMenu = this.NI_contextMenu;
             this.translator_notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("translator_notifyIcon.Icon")));
-            this.translator_notifyIcon.Text = "Translate v1.5";
+            this.translator_notifyIcon.Text = "Translate v1.5.1";
             this.translator_notifyIcon.Visible = true;
             this.translator_notifyIcon.DoubleClick += new System.EventHandler(this.notifyIcon_DoubleClick);
-            this.SizeChanged += MainForm_MinimumSizeChanged;
             // 
             // MainForm
             // 
+            this.SizeChanged += MainForm_MinimumSizeChanged;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(704, 346);
             this.ContextMenuStrip = this.contextMenu;
             this.Controls.Add(this.button_clipboard_cpy);
@@ -389,7 +392,7 @@ namespace Translator
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.ShowInTaskbar = false;
-            this.Text = "Translate v1.5";
+            this.Text = "Translate v1.5.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);

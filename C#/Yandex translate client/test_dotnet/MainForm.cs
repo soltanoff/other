@@ -32,7 +32,7 @@ namespace Translator
         private const string API_KEY = "trnsl.1.1.20160121T075113Z.c7a52a569a61fc9e.dbcafd73421e8d61bd4badc95f778c9a8a3d71e3";
         private const string TEXT_BLOCK = "&text=";
         private const string LANG_BLOCK = "&lang=";
-        private string[] Lang_name = { "русский", "английский", "немецкий", "французский", "украинский" };
+        private string[] Lang_name = { "Русский", "Английский", "Немецкий", "Французский", "Украинский" };
         private string[] Lang_code = { "ru", "en", "de", "fr", "uk" };
         private const string ENCODE_NAME = "windows-1251";
         // ===================================================================================================================
