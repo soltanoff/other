@@ -273,15 +273,27 @@ namespace Translator
             richTB.Font = richTBres.Font = Large_font_richTB = new Font(richTB.Font.FontFamily, LARGE_FONT_SIZE);
             Small_font_richTB = new Font(richTB.Font.FontFamily, SMALL_FONT_SIZE);
 
-            translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
+            //translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
+            close_app = false;
         }
-         
+
+        bool close_app;
+
         private void mainform_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (HotkeyInfo_form.hotkey_checkBox.Checked)
+            if (!close_app)
             {
-                UnregisterHotKey(this.Handle, 1);
-                UnregisterHotKey(this.Handle, 2);
+                e.Cancel = true;
+                Visible = false;
+                translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
+            }
+            else
+            {
+                if (HotkeyInfo_form.hotkey_checkBox.Checked)
+                {
+                    UnregisterHotKey(this.Handle, 1);
+                    UnregisterHotKey(this.Handle, 2);
+                }
             }
         }
         // ===================================================================================================================                            
@@ -334,7 +346,7 @@ namespace Translator
                 Lang_CB_1.SelectedIndex = Lang_CB_2.SelectedIndex;
                 Lang_CB_2.SelectedIndex = temp;
             }
-            if (!to_minimum)
+            if (!Visible)
             {
                 if (Lang_CB_1.SelectedIndex == 1) Lang_CB_1.SelectedIndex = Lang_name.Length;
                 translator_notifyIcon.ShowBalloonTip(1, "Направление перевода:", Lang_CB_1.Text + " -> " + Lang_CB_2.Text, ToolTipIcon.Info);
@@ -516,23 +528,9 @@ namespace Translator
             }
         }
         // ===================================================================================================================
-        bool to_minimum = false;
-
-        public void MainForm_MinimumSizeChanged(object sender, EventArgs e)
-        {
-            if (to_minimum)
-            {
-                to_minimum = Visible = false;
-                translator_notifyIcon.ShowBalloonTip(5, translator_notifyIcon.Text, "Хэй, я тут! :)", ToolTipIcon.Info);
-            }
-            else
-            {
-                to_minimum = true;
-            }
-        }
-
         private void NI_menuItem_Click(object Sender, EventArgs e)
         {
+            close_app = true;
             Close();
         }
 
