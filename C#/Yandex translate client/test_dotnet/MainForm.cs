@@ -115,7 +115,7 @@ namespace Translator
                 not_changed_detect_label = true;
                 Lang_CB_1.SelectedIndex = get_id_lang_code();
             }
-            return get_result().Replace("\\n", "\n").Replace("@1101", "\t");
+            return get_result().Replace("\\n", "\n").Replace("@1101", "\t").Replace("\\\"", "\"");
         }
 
         private String translate_text_from_richTB()
@@ -496,7 +496,7 @@ namespace Translator
             if (richTB.Text.Length > 0)
                 button_url.Enabled = button_clear.Enabled = true;
             else
-                button_url.Enabled = button_clear.Enabled = false;
+                button_url.Enabled = button_clear.Enabled = false;/**/
         }
 
         private void Hotkey_toolStripMenuItem_Click(object sender, EventArgs e)
