@@ -146,16 +146,16 @@ namespace DB_Client
             this.userAbout_richTextBox.Location = new System.Drawing.Point(6, 12);
             this.userAbout_richTextBox.Name = "userAbout_richTextBox";
             this.userAbout_richTextBox.ReadOnly = true;
-            this.userAbout_richTextBox.Size = new System.Drawing.Size(331, 122);
+            this.userAbout_richTextBox.Size = new System.Drawing.Size(332, 122);
             this.userAbout_richTextBox.TabIndex = 0;
             this.userAbout_richTextBox.Text = "";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.userFriends_listBox);
-            this.groupBox3.Location = new System.Drawing.Point(181, 19);
+            this.groupBox3.Location = new System.Drawing.Point(182, 19);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(169, 118);
+            this.groupBox3.Size = new System.Drawing.Size(170, 118);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Friends list";
@@ -184,7 +184,7 @@ namespace DB_Client
             this.groupBox2.Size = new System.Drawing.Size(169, 118);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Main info";
+            this.groupBox2.Text = "Main information";
             // 
             // userCity_textBox
             // 
