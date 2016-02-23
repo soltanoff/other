@@ -13,14 +13,14 @@ namespace DB_Client
 {
     public partial class MainForm : Form
     {
-        SqlConnection DataBase_0 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=0;Integrated Security=True");
-        SqlConnection DataBase_1 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=1;Integrated Security=True");
-        SqlConnection DataBase_2 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=2;Integrated Security=True");
-        SqlConnection DataBase_3 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=3;Integrated Security=True");
-        SqlConnection DataBase_4 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=4;Integrated Security=True");
-        SqlConnection DataBase_info = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=DB_info;Integrated Security=True");
+        private SqlConnection DataBase_0 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=0;Integrated Security=True");
+        private SqlConnection DataBase_1 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=1;Integrated Security=True");
+        private SqlConnection DataBase_2 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=2;Integrated Security=True");
+        private SqlConnection DataBase_3 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=3;Integrated Security=True");
+        private SqlConnection DataBase_4 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=4;Integrated Security=True");
+        private SqlConnection DataBase_info = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=DB_info;Integrated Security=True");
 
-        int[] friend_list;
+        private int[] friend_list;
 
         public MainForm()
         {
@@ -86,7 +86,7 @@ namespace DB_Client
                     cmd.Connection = DataBase_4;
                     break;
                 default:
-                    throw new FormatException("User id must be on range [1..500000]");
+                    throw new FormatException("User id must be on range [1..500000].");
             }
         }
 
@@ -155,6 +155,10 @@ namespace DB_Client
             {
                 MessageBox.Show(error.Message);
             }
+			catch
+			{
+				MessageBox.Show("Неизвестная ошибка.");
+			}
         }
 
         private void userFriends_listBox_DoubleClick(object sender, EventArgs e)
