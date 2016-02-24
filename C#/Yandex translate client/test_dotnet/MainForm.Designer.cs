@@ -336,7 +336,7 @@ namespace Translator
             // 
             // NI_menuItem_close
             // 
-            this.NI_menuItem_close.Index = 3;
+            this.NI_menuItem_close.Index = 2;
             this.NI_menuItem_close.Text = "Закрыть";
             this.NI_menuItem_close.Click += new System.EventHandler(this.NI_menuItem_Click);
             // 
@@ -390,7 +390,7 @@ namespace Translator
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Translate v1.5.1";
+            this.Text = "Translator v1.5.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.mainform_Closing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.contextMS_richTB.ResumeLayout(false);
