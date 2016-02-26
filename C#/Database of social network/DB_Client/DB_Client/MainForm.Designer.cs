@@ -49,6 +49,7 @@ namespace DB_Client
             this.userAge_label = new System.Windows.Forms.Label();
             this.userSurname_label = new System.Windows.Forms.Label();
             this.userName_label = new System.Windows.Forms.Label();
+            this.time_label = new System.Windows.Forms.Label();
             this.main_menuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.userinfo_groupBox.SuspendLayout();
@@ -78,7 +79,7 @@ namespace DB_Client
             // setToolStripMenuItem
             // 
             this.setToolStripMenuItem.Name = "setToolStripMenuItem";
-            this.setToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.setToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.setToolStripMenuItem.Text = "4332 Soltanov";
             // 
             // userid_label
@@ -146,16 +147,16 @@ namespace DB_Client
             this.userAbout_richTextBox.Location = new System.Drawing.Point(6, 12);
             this.userAbout_richTextBox.Name = "userAbout_richTextBox";
             this.userAbout_richTextBox.ReadOnly = true;
-            this.userAbout_richTextBox.Size = new System.Drawing.Size(332, 122);
+            this.userAbout_richTextBox.Size = new System.Drawing.Size(331, 122);
             this.userAbout_richTextBox.TabIndex = 0;
             this.userAbout_richTextBox.Text = "";
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.userFriends_listBox);
-            this.groupBox3.Location = new System.Drawing.Point(182, 19);
+            this.groupBox3.Location = new System.Drawing.Point(181, 19);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(170, 118);
+            this.groupBox3.Size = new System.Drawing.Size(169, 118);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Friends list";
@@ -184,7 +185,7 @@ namespace DB_Client
             this.groupBox2.Size = new System.Drawing.Size(169, 118);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Main information";
+            this.groupBox2.Text = "Main info";
             // 
             // userCity_textBox
             // 
@@ -258,12 +259,22 @@ namespace DB_Client
             this.userName_label.TabIndex = 0;
             this.userName_label.Text = "Name:";
             // 
+            // time_label
+            // 
+            this.time_label.AutoSize = true;
+            this.time_label.Location = new System.Drawing.Point(9, 303);
+            this.time_label.Name = "time_label";
+            this.time_label.Size = new System.Drawing.Size(71, 13);
+            this.time_label.TabIndex = 8;
+            this.time_label.Text = "Runtime: 0ms";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(538, 328);
+            this.Controls.Add(this.time_label);
             this.Controls.Add(this.userinfo_groupBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.main_menuStrip);
@@ -310,6 +321,7 @@ namespace DB_Client
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RichTextBox userAbout_richTextBox;
         private System.Windows.Forms.ListBox userFriends_listBox;
+        private System.Windows.Forms.Label time_label;
     }
 }
 
