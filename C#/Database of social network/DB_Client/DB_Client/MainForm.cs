@@ -132,7 +132,7 @@ namespace DB_Client
             for (int i = 0; i < size; i++)
             {
                 userFriends_listBox.Items.Add(xml_parse(cache, "friend_name_" + i.ToString()));
-                friend_list[i] = Convert.ToInt32(xml_parse(cache, "id"));
+                friend_list[i] = Convert.ToInt32(xml_parse(cache, "id_" + i.ToString()));
             }
 
             userAbout_richTextBox.Text = xml_parse(cache, "about");
@@ -189,7 +189,7 @@ namespace DB_Client
                      "<city>" + userCity_textBox.Text + "</city>\n" +
                      "<friend_count>" + userFriends_listBox.Items.Count + "</friend_count>";
                 for (int i = 0; i < userFriends_listBox.Items.Count; i++)
-                    user_info += "\n<friend_name_" + i.ToString() + ">" + userFriends_listBox.Items[i] + "</friend_name_" + i.ToString() + ">\n<id>" + friend_list[i] + "</id>";
+                    user_info += "\n<friend_name_" + i.ToString() + ">" + userFriends_listBox.Items[i] + "</friend_name_" + i.ToString() + ">\n<id_" + i.ToString() + ">" + friend_list[i] + "</id_" + i.ToString() + ">";
                 user_info += "\n<about>" + userAbout_richTextBox.Text + "</about>";
 
                 mcache_client.Store(StoreMode.Set, "user_" + user_id.ToString(), user_info);
@@ -198,6 +198,11 @@ namespace DB_Client
         }
 
         private void get_button_Click(object sender, EventArgs e)
+        {
+            get_user_info();
+        }
+
+        private void get_user_info()
         {
             int user_id = 0;
             try
@@ -208,7 +213,7 @@ namespace DB_Client
                 object cache_value;
 
                 timer.Start();
-                if (mcache_client.TryGet("user_" + user_id.ToString(), out cache_value))
+                if (try_get_info_from_mcache(user_id, out cache_value))
                 {
                     cache_parser(Convert.ToString(cache_value));
                     timer.Stop();
@@ -227,6 +232,11 @@ namespace DB_Client
             {
                 MessageBox.Show(error.Message);
             }
+        }
+
+        private bool try_get_info_from_mcache(int user_id, out object cache_value)
+        {
+            return mcache_client.TryGet("user_" + user_id.ToString(), out cache_value);
         }
 
         private void userFriends_listBox_DoubleClick(object sender, EventArgs e)

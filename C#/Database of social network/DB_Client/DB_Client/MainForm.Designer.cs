@@ -79,8 +79,8 @@ namespace DB_Client
             // setToolStripMenuItem
             // 
             this.setToolStripMenuItem.Name = "setToolStripMenuItem";
-            this.setToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
-            this.setToolStripMenuItem.Text = "4332 Soltanov";
+            this.setToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.setToolStripMenuItem.Text = "© 4332 Soltanov";
             // 
             // userid_label
             // 
