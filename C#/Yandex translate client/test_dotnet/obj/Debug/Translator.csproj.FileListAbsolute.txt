@@ -1,1 +1,0 @@
-C:\Users\Admin\Documents\GitHub\other\C#\Yandex translate client\test_dotnet\bin\Debug\Translator v1.5.1.exe.config
