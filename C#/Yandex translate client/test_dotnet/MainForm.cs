@@ -360,10 +360,20 @@ namespace Translator
 
         private void button_clear_richTB_Click(object sender, EventArgs e)
         {
+            clear_richTextBoxes();
+        }
+
+        private void clear_richTextBoxes()
+        {
             richTBres.Text = richTB.Text = "";
         }
 
         private void button_clipboard_cpy_Click(object sender, EventArgs e)
+        {
+            set_text_to_clipboard();
+        }
+
+        private void set_text_to_clipboard()
         {
             Clipboard.SetText(richTBres.Text);
             MessageBox.Show("Перевод скопирован в буфер обмена.");
@@ -438,6 +448,11 @@ namespace Translator
         }
 
         private void fdToolStripMenuItem1_Click(object sender, EventArgs e) // About
+        {
+            show_about_window();
+        }
+
+        private static void show_about_window()
         {
             About F = new About();
             F.Show();
