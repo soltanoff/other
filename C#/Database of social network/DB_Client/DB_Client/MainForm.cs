@@ -14,7 +14,7 @@ using Enyim.Caching;
 using Enyim.Caching.Configuration;
 using Enyim.Caching.Memcached;
 using System.Text.RegularExpressions;
-
+using MySql.Data.MySqlClient;
 
 
 namespace DB_Client
@@ -34,10 +34,20 @@ namespace DB_Client
         Enyim.Caching.MemcachedClient mcache_client;
         MemcachedClientConfiguration mcache_config;
 
-        string mcache_ip = "127.0.0.1";
-        int mcache_port = 11211;
 
-        int[] friend_list;
+        private string localhost = "127.0.0.1";
+        private int mcache_port = 11211;
+        private int port = 9360;
+
+        private string charset = "utf8";
+
+        private List<int> friend_list = new List<int>();
+
+
+        private int window_width_with_search = 926;
+        private int window_width_without_search = 550;
+        private int max_search_result_count = 1000;
+
 
         public MainForm()
         {
@@ -46,11 +56,11 @@ namespace DB_Client
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
+            this.Width = 550;
             try
             {
                 mcache_config = new MemcachedClientConfiguration();
-                mcache_config.Servers.Add(new IPEndPoint(IPAddress.Parse(mcache_ip), mcache_port));
+                mcache_config.Servers.Add(new IPEndPoint(IPAddress.Parse(localhost), mcache_port));
                 mcache_config.Protocol = MemcachedProtocol.Text;
                 mcache_client = new Enyim.Caching.MemcachedClient(mcache_config);
 
@@ -128,11 +138,10 @@ namespace DB_Client
             userCity_textBox.Text = xml_parse(cache, "city");
 
             int size = Convert.ToInt32(xml_parse(cache, "friend_count"));
-            friend_list = new int[size];
             for (int i = 0; i < size; i++)
             {
                 userFriends_listBox.Items.Add(xml_parse(cache, "friend_name_" + i.ToString()));
-                friend_list[i] = Convert.ToInt32(xml_parse(cache, "id_" + i.ToString()));
+                friend_list.Add(Convert.ToInt32(xml_parse(cache, "id_" + i.ToString())));
             }
 
             userAbout_richTextBox.Text = xml_parse(cache, "about");
@@ -166,8 +175,6 @@ namespace DB_Client
 
                 DataSet f_data_set;
 
-                friend_list = new int[data_set.Tables[0].Rows.Count];
-
                 for (int i = 0; i < data_set.Tables[0].Rows.Count; i++)
                 {
                     get_connection(out cmd, Convert.ToInt32(data_set.Tables[0].Rows[i][2]));
@@ -178,7 +185,7 @@ namespace DB_Client
 
                     if (f_data_set.Tables[0].Rows.Count > 0)
                     {
-                        friend_list[i] = Convert.ToInt32(data_set.Tables[0].Rows[i][2]);
+                        friend_list.Add(Convert.ToInt32(data_set.Tables[0].Rows[i][2]));
                         userFriends_listBox.Items.Add(f_data_set.Tables[0].Rows[0]["Name"] + " " + f_data_set.Tables[0].Rows[0]["Surname"]);
                     }
                 }
@@ -208,12 +215,13 @@ namespace DB_Client
             try
             {
                 userFriends_listBox.Items.Clear();
+                friend_list.Clear();
                 user_id = Convert.ToInt32(userid_textBox.Text.ToString());
 
                 object cache_value;
 
                 timer.Start();
-                if (try_get_info_from_mcache(user_id, out cache_value))
+                if (mcache_client.TryGet("user_" + user_id.ToString(), out cache_value))
                 {
                     cache_parser(Convert.ToString(cache_value));
                     timer.Stop();
@@ -234,11 +242,6 @@ namespace DB_Client
             }
         }
 
-        private bool try_get_info_from_mcache(int user_id, out object cache_value)
-        {
-            return mcache_client.TryGet("user_" + user_id.ToString(), out cache_value);
-        }
-
         private void userFriends_listBox_DoubleClick(object sender, EventArgs e)
         {
             if (friend_list.Count() > 0)
@@ -247,5 +250,107 @@ namespace DB_Client
                 get_button_Click(sender, e);
             }
         }
+
+        private void search_button_Click(object sender, EventArgs e)
+        {
+            begin_search();   
+        }
+
+        private void userFriends_listBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        bool search_activated = false;
+
+        private void search_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            search_activated = !search_activated;
+            if (search_activated)
+                this.Width = window_width_with_search;
+            else
+            this.Width = window_width_without_search;
+        }
+
+        /* ======================================================================================== */
+        private List<int> user_list = new List<int>();
+
+        private string get_search_field(ref TextBox field, string field_name)
+        {
+            if (field.Text.Length >= 1)
+                return "@" + field_name + " *" + field.Text.ToString() + "*";
+            else
+                return "";
+        }
+
+        private string create_search_parameter()
+        {
+            return get_search_field(ref searchName_textBox, "name") + " " +
+                get_search_field(ref searchSurname_textBox, "surname") + " " +
+                get_search_field(ref searchCity_textBox, "city");
+        }
+
+        private void begin_search()
+        {
+            var connectionString = "Server=" + localhost + ";Port=" + port.ToString() + ";Character Set=" + charset;
+            string query;
+            bool have_matches = false;
+            bool have_age = false;
+
+            user_listBox.Items.Clear();
+            user_list.Clear();
+            /* ==================================================================================================== */
+            string matches = create_search_parameter();
+
+            if (matches.Length > 3)
+            {
+                query = "select id, name, surname from user_info where match('" + create_search_parameter() + "')";
+                have_matches = true;
+            }
+            else
+                query = "select id, name, surname from user_info";
+
+            if (searchAge_textBox.Text.Length >= 1)
+            {
+                if (have_matches)
+                    query += " and age >= " + searchAge_textBox.Text.ToString();
+                else
+                    query += " where age >= " + searchAge_textBox.Text.ToString();
+                have_age = true;
+            }
+
+            query += " limit " + max_search_result_count.ToString();
+
+            if (have_age || have_matches)
+            {
+                using (var connection = new MySqlConnection(connectionString))
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            user_listBox.Items.Add(reader.GetString("name").TrimEnd(' ') + " " +
+                                reader.GetString("surname").TrimEnd(' ') + "\t" +
+                                "[id:" + reader.GetString("id").TrimEnd(' ') + "]"
+                            );
+                            user_list.Add(Convert.ToInt32(reader.GetString("id").TrimEnd(' ')));
+                        }
+                    }
+                }
+            }
+        }
+
+        private void user_listBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (user_list.Count() > 0)
+            {
+                userid_textBox.Text = user_list[user_listBox.SelectedIndex].ToString();
+                get_button_Click(sender, e);
+            }
+        }
+
     }
 }
