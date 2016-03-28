@@ -62,8 +62,11 @@ https://github.com/ServiceStack/redis-windows/tree/master/downloads
 
 * Memcached: http://zurmo.org/wiki/installing-memcache-on-windows
 
+* Sphinx: http://sphinxsearch.com/
 
 Documentation of software products:
+
+* Sphinx: http://sphinxsearch.com/about/sphinx/
 
 * Redis: http://redis.io/commands
 
