@@ -1,0 +1,145 @@
+searchd
+{
+	# какой порт и какой протокол "слушает" служба
+	listen			= 9360:mysql41
+
+	# PID file, searchd process ID file name
+    	# mandatory
+	pid_file		= c:/sphinx/data/searchd.pid
+	
+	# файл с логами
+	log			= c:/sphinx/data/log/log.txt
+
+	# файл с логами поисковых запросов
+	query_log		= c:/sphinx/data/log/query_log.txt
+
+	binlog_path		= c:/sphinx/data/binlog
+
+	mysql_version_string 	= 5.0.0
+}
+
+source user_info_base
+{
+	sql_field_string	= Name
+	sql_field_string	= Surname
+	sql_attr_uint		= Age
+	sql_field_string	= City
+	
+	#rt_attr_string		= Name
+	#rt_field 			= Name
+	#rt_attr_string		= Surname
+	#rt_field			= Surname
+	#rt_attr_uint		= Age
+	#rt_field 			= Age
+	#rt_attr_string		= City
+	#rt_field			= City
+} 
+
+
+source user_info : user_info_base
+{
+	sql_query = \
+		select \
+			id_user as 'id', \
+			Name, Surname, Age, City\
+		from [dbo].[User]
+}
+
+source base_0 : user_info
+{
+	type			= mssql
+	sql_host		= localhost
+	sql_db			= 0
+	sql_user		=
+	sql_pass		=
+	mssql_winauth		= 1
+	mssql_unicode		= 1
+}
+
+source base_1 : user_info
+{
+	type			= mssql
+	sql_host		= localhost
+	sql_db			= 1
+	sql_user		=
+	sql_pass		=
+	mssql_winauth		= 1
+	mssql_unicode		= 1
+}
+
+source base_2 : user_info
+{
+	type			= mssql
+	sql_host		= localhost
+	sql_db			= 2
+	sql_user		=
+	sql_pass		=
+	mssql_winauth		= 1
+	mssql_unicode		= 1
+}
+
+source base_3 : user_info
+{
+	type			= mssql
+	sql_host		= localhost
+	sql_db			= 3
+	sql_user		=
+	sql_pass		=
+	mssql_winauth		= 1
+	mssql_unicode		= 1
+}
+
+source base_4 : user_info
+{
+	type			= mssql
+	sql_host		= localhost
+	sql_db			= 4
+	sql_user		=
+	sql_pass		=
+	mssql_winauth		= 1
+	mssql_unicode		= 1
+}
+
+source base_5 : user_info
+{
+	type			= mssql
+	sql_host		= localhost
+	sql_db			= 5
+	sql_user		=
+	sql_pass		=
+	mssql_winauth		= 1
+	mssql_unicode		= 1
+}
+
+index user_info 
+{
+	#========
+	#stem_enru
+	morphology 			= stem_enru 
+	enable_star 		= 1
+	dict				= crc
+	min_infix_len		= 1
+	#========
+	# Индекс с учетом морфологии
+    	#morphology = stem_en
+	
+	# Кодировка
+	charset_type		= utf-8
+	
+ 	charset_table = 0..9, A..Z->a..z, _, a..z, \
+    U+410..U+42F->U+430..U+44F, U+430..U+44F, U+401->U+451, U+451
+	
+	# Источник данных для индексирования
+	source			= base_0
+	source			= base_1
+	source			= base_2
+	source			= base_3
+	source			= base_4
+	#source			= base_5
+	
+	# Адрес, где будут хранится данные индекса
+	path			= c:/sphinx/data/index/user_info 
+
+	# Минимальная длина слова для индексации
+    	#min_word_len        = 1
+}
