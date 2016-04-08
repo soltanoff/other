@@ -41,10 +41,12 @@ namespace WebApp_DB_Client
 
         //private List<int> friend_list = new List<int>();
 
-
+        /*
         private int window_width_with_search = 926;
         private int window_width_without_search = 550;
+        */
         private int max_search_result_count = 1000;
+        
 
         private void print_message(string str)
         {
@@ -81,7 +83,6 @@ namespace WebApp_DB_Client
             {
                 print_message("MainForm_Load: " + error.Message);
             }
-        
         }
         
         private void get_connection(out SqlCommand cmd, int user_id)
@@ -251,12 +252,150 @@ namespace WebApp_DB_Client
 
         protected void userFriends_listBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            if (userFriends_listBox.Rows > 0)//(friend_list.Count() > 0)
+            if (userFriends_listBox.Rows > 0)
             {
-
                 userid_textBox.Text = userFriends_listBox.SelectedItem.Value;//friend_list[userFriends_listBox.SelectedIndex].ToString();
                 get_user_info();
+            }
+        }
+
+        protected void search_button_Click(object sender, EventArgs e)
+        {
+            begin_search(); 
+        }
+        
+        protected void search_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            search_panel.Visible = search_checkBox.Checked;
+        }
+
+        /* ======================================================================================== */
+        //private List<int> user_list = new List<int>();
+
+        private string get_search_field(ref TextBox field, string field_name)
+        {
+            if (field.Text.Length >= 1)
+                return "@" + field_name + " *" + field.Text.ToString() + "*";
+            else
+                return "";
+        }
+
+        private string create_search_parameter()
+        {
+            return get_search_field(ref searchName_textBox, "name") + " " +
+                get_search_field(ref searchSurname_textBox, "surname") + " " +
+                get_search_field(ref searchAbout_textBox, "about") + " " +
+                get_search_field(ref searchCity_textBox, "city");
+        }
+
+        private void begin_search()
+        {
+            var connectionString = "Server=" + localhost + ";Port=" + port.ToString() + ";Character Set=" + charset;
+            string query;
+            bool have_matches = false;
+            bool have_age = false;
+
+            user_listBox.Items.Clear();
+            //user_list.Clear();
+            /* ==================================================================================================== */
+            string matches = create_search_parameter();
+
+            if (matches.Length > 3)
+            {
+                query = "select id, name, surname from user_info where match('" + create_search_parameter() + "')";
+                have_matches = true;
+            }
+            else
+                query = "select id, name, surname from user_info";
+            /* ===================================================================================== */
+            if (age_range_checkBox.Checked)
+            {
+                bool have_from_age = false;
+                if (from_age_textBox.Text.Length >= 1)
+                {
+                    if (have_matches)
+                        query += " and age >= " + from_age_textBox.Text.ToString();
+                    else
+                        query += " where age >= " + from_age_textBox.Text.ToString();
+                    have_from_age = have_age = true;
+                }
+                if (to_age_textBox.Text.Length >= 1)
+                {
+                    if (have_matches || have_from_age)
+                        query += " and age <= " + to_age_textBox.Text.ToString();
+                    else
+                        query += " where age <= " + to_age_textBox.Text.ToString();
+                    have_age = true;
+                } 
+            }
+            else
+            {
+                if (searchAge_textBox.Text.Length >= 1)
+                {
+                    if (have_matches)
+                        query += " and age = " + searchAge_textBox.Text.ToString();
+                    else
+                        query += " where age = " + searchAge_textBox.Text.ToString();
+                    have_age = true;
+                }
+            }
+            /* ===================================================================================== */
+            query += " limit " + max_search_result_count.ToString();
+
+            if (have_age || have_matches)
+            {
+                using (var connection = new MySqlConnection(connectionString))
+                using (var command = new MySqlCommand(query, connection))
+                {
+                    connection.Open();
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            ListItem user_friend = new ListItem();
+
+                            user_friend.Text = reader.GetString("name").TrimEnd(' ') + " " +
+                                reader.GetString("surname").TrimEnd(' ') + "\t" +
+                                "[id:" + reader.GetString("id").TrimEnd(' ') + "]";
+                            user_friend.Value = reader.GetString("id").TrimEnd(' ');
+                            
+                            user_listBox.Items.Add(user_friend);
+                            /*
+                            user_listBox.Items.Add(reader.GetString("name").TrimEnd(' ') + " " +
+                                reader.GetString("surname").TrimEnd(' ') + "\t" +
+                                "[id:" + reader.GetString("id").TrimEnd(' ') + "]"
+                            );
+                            user_list.Add(Convert.ToInt32(reader.GetString("id").TrimEnd(' ')));
+                            */
+                        }
+                    }
+                }
+            }
+        }
+
+        protected void user_listBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (user_listBox.Rows > 0)
+            {
+                userid_textBox.Text = user_listBox.SelectedItem.Value;
+                get_user_info();
+            }
+        }
+
+        protected void age_range_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            age_panel.Enabled = age_range_checkBox.Checked;
+            if (age_range_checkBox.Checked)
+            {
+                from_age_textBox.Text = searchAge_textBox.Text;
+                searchAge_textBox.Text = "";
+                searchAge_textBox.Enabled = false;
+            }
+            else
+            {
+                searchAge_textBox.Text = from_age_textBox.Text;
+                searchAge_textBox.Enabled = true;
             }
         }
     }
