@@ -1,0 +1,22 @@
+---------------------------------------
+SphinxConnector.NET 3.11.0 Release Notes
+---------------------------------------
+
+Fluent API: When accessing nested JSON objects, the path was not correctly resolved.
+
+Fluent API: Any/All/Contains could not be used with a the value of a Dictionary entry, because the required
+cast to the appropriate collection type wasn't handled correctly.
+
+Fluent API: Added public method Get() to ConnectionStringConfigurator which returns the configured
+connection string, as it might be useful for logging/debugging purposes.
+
+Fluent API: Added support for PACKEDFACTORS().
+
+Fluent API: When using In() in Select() with a string argument, the string wasn't wrapped in a parameter during translation to SphinxQL.
+
+General: Added ReSharper annotations.
+
+SphinxQL/FluentAPI: Updated the Sphinx version string parser, now that Sphinx has moved to Git. Before, the Sphinx version string would
+contain the SVN revision, which SphinxConnector.NET used (in addition to the version) to determine Sphinx capabilities
+(and certain quirks). Starting from 2.2.10, only the version will be used, previous versions build with the SVN revision
+will be treated as before, i.e. the SVN revision will be taken into account.
