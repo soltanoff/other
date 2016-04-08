@@ -65,6 +65,12 @@ namespace DB_Client
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.age_range_checkBox = new System.Windows.Forms.CheckBox();
+            this.age_panel = new System.Windows.Forms.Panel();
+            this.to_age_textBox = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.from_age_textBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.main_menuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.userinfo_groupBox.SuspendLayout();
@@ -73,6 +79,7 @@ namespace DB_Client
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.age_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // main_menuStrip
@@ -288,7 +295,7 @@ namespace DB_Client
             // 
             // search_button
             // 
-            this.search_button.Location = new System.Drawing.Point(6, 168);
+            this.search_button.Location = new System.Drawing.Point(6, 244);
             this.search_button.Name = "search_button";
             this.search_button.Size = new System.Drawing.Size(344, 23);
             this.search_button.TabIndex = 9;
@@ -312,9 +319,9 @@ namespace DB_Client
             this.groupBox5.Controls.Add(this.user_listBox);
             this.groupBox5.Controls.Add(this.groupBox6);
             this.groupBox5.Controls.Add(this.search_button);
-            this.groupBox5.Location = new System.Drawing.Point(542, 72);
+            this.groupBox5.Location = new System.Drawing.Point(530, 33);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(356, 199);
+            this.groupBox5.Size = new System.Drawing.Size(356, 271);
             this.groupBox5.TabIndex = 11;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Search panel";
@@ -322,14 +329,16 @@ namespace DB_Client
             // user_listBox
             // 
             this.user_listBox.FormattingEnabled = true;
-            this.user_listBox.Location = new System.Drawing.Point(181, 28);
+            this.user_listBox.Location = new System.Drawing.Point(181, 26);
             this.user_listBox.Name = "user_listBox";
-            this.user_listBox.Size = new System.Drawing.Size(169, 134);
+            this.user_listBox.Size = new System.Drawing.Size(169, 212);
             this.user_listBox.TabIndex = 2;
             this.user_listBox.DoubleClick += new System.EventHandler(this.user_listBox_DoubleClick);
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.age_panel);
+            this.groupBox6.Controls.Add(this.age_range_checkBox);
             this.groupBox6.Controls.Add(this.searchAbout_textBox);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Controls.Add(this.searchCity_textBox);
@@ -342,14 +351,14 @@ namespace DB_Client
             this.groupBox6.Controls.Add(this.label6);
             this.groupBox6.Location = new System.Drawing.Point(6, 19);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(169, 143);
+            this.groupBox6.Size = new System.Drawing.Size(169, 218);
             this.groupBox6.TabIndex = 0;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Main info";
             // 
             // searchAbout_textBox
             // 
-            this.searchAbout_textBox.Location = new System.Drawing.Point(62, 116);
+            this.searchAbout_textBox.Location = new System.Drawing.Point(62, 68);
             this.searchAbout_textBox.Name = "searchAbout_textBox";
             this.searchAbout_textBox.Size = new System.Drawing.Size(100, 20);
             this.searchAbout_textBox.TabIndex = 9;
@@ -358,7 +367,7 @@ namespace DB_Client
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 119);
+            this.label2.Location = new System.Drawing.Point(7, 71);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 9;
@@ -383,7 +392,7 @@ namespace DB_Client
             // 
             // searchAge_textBox
             // 
-            this.searchAge_textBox.Location = new System.Drawing.Point(62, 68);
+            this.searchAge_textBox.Location = new System.Drawing.Point(63, 116);
             this.searchAge_textBox.Name = "searchAge_textBox";
             this.searchAge_textBox.Size = new System.Drawing.Size(100, 20);
             this.searchAge_textBox.TabIndex = 5;
@@ -408,7 +417,7 @@ namespace DB_Client
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 71);
+            this.label4.Location = new System.Drawing.Point(7, 119);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 13);
             this.label4.TabIndex = 2;
@@ -431,6 +440,63 @@ namespace DB_Client
             this.label6.Size = new System.Drawing.Size(38, 13);
             this.label6.TabIndex = 0;
             this.label6.Text = "Name:";
+            // 
+            // age_range_checkBox
+            // 
+            this.age_range_checkBox.AutoSize = true;
+            this.age_range_checkBox.Location = new System.Drawing.Point(62, 142);
+            this.age_range_checkBox.Name = "age_range_checkBox";
+            this.age_range_checkBox.Size = new System.Drawing.Size(91, 17);
+            this.age_range_checkBox.TabIndex = 10;
+            this.age_range_checkBox.Text = "Range of age";
+            this.age_range_checkBox.UseVisualStyleBackColor = true;
+            this.age_range_checkBox.CheckedChanged += new System.EventHandler(this.age_range_checkBox_CheckedChanged);
+            // 
+            // age_panel
+            // 
+            this.age_panel.Controls.Add(this.to_age_textBox);
+            this.age_panel.Controls.Add(this.label7);
+            this.age_panel.Controls.Add(this.from_age_textBox);
+            this.age_panel.Controls.Add(this.label8);
+            this.age_panel.Enabled = false;
+            this.age_panel.Location = new System.Drawing.Point(62, 163);
+            this.age_panel.Name = "age_panel";
+            this.age_panel.Size = new System.Drawing.Size(106, 49);
+            this.age_panel.TabIndex = 11;
+            // 
+            // to_age_textBox
+            // 
+            this.to_age_textBox.Location = new System.Drawing.Point(48, 27);
+            this.to_age_textBox.Name = "to_age_textBox";
+            this.to_age_textBox.Size = new System.Drawing.Size(52, 20);
+            this.to_age_textBox.TabIndex = 12;
+            this.to_age_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(15, 30);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(16, 13);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "to";
+            // 
+            // from_age_textBox
+            // 
+            this.from_age_textBox.Location = new System.Drawing.Point(48, 2);
+            this.from_age_textBox.Name = "from_age_textBox";
+            this.from_age_textBox.Size = new System.Drawing.Size(52, 20);
+            this.from_age_textBox.TabIndex = 11;
+            this.from_age_textBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 5);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(27, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "from";
             // 
             // MainForm
             // 
@@ -462,6 +528,8 @@ namespace DB_Client
             this.groupBox5.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.age_panel.ResumeLayout(false);
+            this.age_panel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -506,6 +574,12 @@ namespace DB_Client
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.CheckBox age_range_checkBox;
+        private System.Windows.Forms.Panel age_panel;
+        private System.Windows.Forms.TextBox to_age_textBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox from_age_textBox;
+        private System.Windows.Forms.Label label8;
     }
 }
 

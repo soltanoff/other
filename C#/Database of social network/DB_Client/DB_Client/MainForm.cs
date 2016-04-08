@@ -23,12 +23,14 @@ namespace DB_Client
     {
         const int MAX_USERS_COUNT = 500000;
 
-        SqlConnection DataBase_0 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=0;Integrated Security=True");
-        SqlConnection DataBase_1 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=1;Integrated Security=True");
-        SqlConnection DataBase_2 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=2;Integrated Security=True");
-        SqlConnection DataBase_3 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=3;Integrated Security=True");
-        SqlConnection DataBase_4 = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=4;Integrated Security=True");
-        SqlConnection DataBase_info = new SqlConnection(@"Data Source=PETTISSON;Initial Catalog=DB_info;Integrated Security=True");
+        static string server_name = "PETTISSON";//"BM-23-10-K13";
+
+        SqlConnection DataBase_0 = new SqlConnection(@"Data Source=" + server_name + ";Initial Catalog=0;Integrated Security=True");
+        SqlConnection DataBase_1 = new SqlConnection(@"Data Source=" + server_name + ";Initial Catalog=1;Integrated Security=True");
+        SqlConnection DataBase_2 = new SqlConnection(@"Data Source=" + server_name + ";Initial Catalog=2;Integrated Security=True");
+        SqlConnection DataBase_3 = new SqlConnection(@"Data Source=" + server_name + ";Initial Catalog=3;Integrated Security=True");
+        SqlConnection DataBase_4 = new SqlConnection(@"Data Source=" + server_name + ";Initial Catalog=4;Integrated Security=True");
+        SqlConnection DataBase_info = new SqlConnection(@"Data Source=" + server_name + ";Initial Catalog=DB_info;Integrated Security=True");
         
         System.Diagnostics.Stopwatch timer = new System.Diagnostics.Stopwatch();
         Enyim.Caching.MemcachedClient mcache_client;
@@ -261,12 +263,9 @@ namespace DB_Client
 
         }
 
-        bool search_activated = false;
-
         private void search_checkBox_CheckedChanged(object sender, EventArgs e)
         {
-            search_activated = !search_activated;
-            if (search_activated)
+            if (search_checkBox.Checked)
                 this.Width = window_width_with_search;
             else
             this.Width = window_width_without_search;
@@ -287,6 +286,7 @@ namespace DB_Client
         {
             return get_search_field(ref searchName_textBox, "name") + " " +
                 get_search_field(ref searchSurname_textBox, "surname") + " " +
+                get_search_field(ref searchAbout_textBox, "about") + " " +
                 get_search_field(ref searchCity_textBox, "city");
         }
 
@@ -310,14 +310,40 @@ namespace DB_Client
             else
                 query = "select id, name, surname from user_info";
 
-            if (searchAge_textBox.Text.Length >= 1)
+            /* ===================================================================================== */
+            if (age_range_checkBox.Checked)
             {
-                if (have_matches)
-                    query += " and age >= " + searchAge_textBox.Text.ToString();
-                else
-                    query += " where age >= " + searchAge_textBox.Text.ToString();
-                have_age = true;
+                bool have_from_age = false;
+                if (from_age_textBox.Text.Length >= 1)
+                {
+                    if (have_matches)
+                        query += " and age >= " + from_age_textBox.Text.ToString();
+                    else
+                        query += " where age >= " + from_age_textBox.Text.ToString();
+                    have_from_age = have_age = true;
+                }
+                if (to_age_textBox.Text.Length >= 1)
+                {
+                    if (have_matches || have_from_age)
+                        query += " and age <= " + to_age_textBox.Text.ToString();
+                    else
+                        query += " where age <= " + to_age_textBox.Text.ToString();
+                    have_age = true;
+                }
             }
+            else
+            {
+                if (searchAge_textBox.Text.Length >= 1)
+                {
+                    if (have_matches)
+                        query += " and age = " + searchAge_textBox.Text.ToString();
+                    else
+                        query += " where age = " + searchAge_textBox.Text.ToString();
+                    have_age = true;
+                }
+            }
+            /* ===================================================================================== */
+            
 
             query += " limit " + max_search_result_count.ToString();
 
@@ -349,6 +375,22 @@ namespace DB_Client
             {
                 userid_textBox.Text = user_list[user_listBox.SelectedIndex].ToString();
                 get_button_Click(sender, e);
+            }
+        }
+
+        private void age_range_checkBox_CheckedChanged(object sender, EventArgs e)
+        {
+            age_panel.Enabled = age_range_checkBox.Checked;
+            if (age_range_checkBox.Checked)
+            {
+                from_age_textBox.Text = searchAge_textBox.Text;
+                searchAge_textBox.Text = "";
+                searchAge_textBox.Enabled = false;
+            }
+            else
+            {
+                searchAge_textBox.Text = from_age_textBox.Text;
+                searchAge_textBox.Enabled = true;
             }
         }
 
