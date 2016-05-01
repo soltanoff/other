@@ -68,6 +68,12 @@ namespace WebApp_DB_Client
                 DataBase_3.Open();
                 DataBase_4.Open();
                 DataBase_info.Open();
+                DataBase_0.Close();
+                DataBase_1.Close();
+                DataBase_2.Close();
+                DataBase_3.Close();
+                DataBase_4.Close();
+                DataBase_info.Close();
             }
             catch (SqlException)
             {
@@ -82,6 +88,14 @@ namespace WebApp_DB_Client
             catch (Exception error) 
             {
                 print_message("MainForm_Load: " + error.Message);
+            }
+
+            if (this.Request.QueryString.ToString().Length > 0)
+            {
+                var str = this.Request.QueryString.GetValues("user_id");
+                //print_message(str[0].ToString());
+                userid_textBox.Text = str[0];
+                get_user_info();
             }
         }
         
@@ -98,6 +112,7 @@ namespace WebApp_DB_Client
                 get_db_id.Parameters.Add("@DB_id", SqlDbType.Int);
                 get_db_id.Parameters["@DB_id"].Direction = ParameterDirection.Output;
 
+                DataBase_info.Open();
                 get_db_id.ExecuteNonQuery();
 
                 cmd = new SqlCommand();
@@ -119,6 +134,7 @@ namespace WebApp_DB_Client
                         cmd.Connection = DataBase_4;
                         break;
                 }
+                DataBase_info.Close();
             }
             else throw new FormatException("User id must be on range [1.." + MAX_USERS_COUNT.ToString() + "].");
         }
@@ -158,6 +174,8 @@ namespace WebApp_DB_Client
             SqlDataAdapter data_adapter;
 
             get_connection(out cmd, user_id);
+
+            cmd.Connection.Open();
             cmd.CommandText = "select * from [User] where [id_user] =" + user_id.ToString();
 
             data_reader = cmd.ExecuteReader();
@@ -209,17 +227,16 @@ namespace WebApp_DB_Client
                 mcache_client.Store(StoreMode.Set, "user_" + user_id.ToString(), user_info);
             }
             else print_message("Запись не найдена!");
+            cmd.Connection.Close();
         }
 
-        private void get_user_info()
+        private void get_user_info(int user_id = 0)
         {
-            int user_id = 0;
-          
             try
             {
                 userFriends_listBox.Items.Clear();
                 //friend_list.Clear();
-                user_id = Convert.ToInt32(userid_textBox.Text.ToString());
+                if (user_id == 0) user_id = Convert.ToInt32(userid_textBox.Text.ToString());
 
                 object cache_value;
 
