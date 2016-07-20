@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 from dbconnector import DBConnector
+from newsparser import NewsParser
 from logger import Logger
 import random
 import vk_api
@@ -12,11 +13,14 @@ BOT_SIGN_IN = {
     'password': u'huluna2013'
 }
 ADMIN_LIST = [77698338, 96996256]
-VERSION = 'v0.8.3'
+VERSION = 'v0.8.9'
 
 
 class MainBot(object):
     def __init__(self):
+        self._disable = False
+        self._is_intelligent = False
+
         self._vk_session = vk_api.VkApi(
             BOT_SIGN_IN['login'],
             BOT_SIGN_IN['password'],
@@ -29,14 +33,28 @@ class MainBot(object):
             print(error_msg)
             return
 
-        self._vk = self._vk_session.get_api()
-        self._bot_name = self._get_user_name(None)
-        self._db = DBConnector()
         self._logger = Logger()
-        self._ignore_msgs = self._logger.read_history()
-        self._ans_list = self._db.select_ids()
+        self._db = DBConnector()
+        self._news = NewsParser()
 
-        self._disable = False
+        self._vk = self._vk_session.get_api()
+
+        self._ignore_msgs = self._logger.read_history()
+
+        self._bot_name = self._get_user_name(None)
+
+        self._ans_list = []
+        self._msg_list = []
+        self._intell_ans_list = []
+        self._intell_msg_list = []
+        self.__update_messages()
+
+    def __update_messages(self):
+        self._ans_list = self._db.select_ids(is_question_answer=1)
+        self._msg_list = self._db.select_ids()
+
+        self._intell_ans_list = self._db.select_ids(is_question_answer=1, is_intelligent=1)
+        self._intell_msg_list = self._db.select_ids(is_intelligent=1)
 
     @staticmethod
     def __captcha_handler(captcha):
@@ -78,42 +96,57 @@ class MainBot(object):
                 message=text
             )
 
+    def _get_random_message(self, msg_list):
+        return self._db.get_message(msg_list[random.randint(0, len(msg_list) - 1)][0])
+
     def _send_message_from_db(self, msg):
-        self._send(
-            msg,
-            '%s, %s' % (
-                self._get_user_name(msg['user_id']),
-                self._db.get_message(self._ans_list[random.randint(0, len(self._ans_list)-1)][0])
-            )
-        )
+        if '?' in msg['body']:
+            text = self._get_random_message(self._ans_list) if not self._is_intelligent \
+                else self._get_random_message(self._intell_ans_list)
+        else:
+            text = self._get_random_message(self._msg_list) if not self._is_intelligent \
+                else self._get_random_message(self._intell_msg_list)
+        self._send(msg, u'%s, %s' % (self._get_user_name(msg['user_id']), text))
 
     @staticmethod
     def _prepare_msg(msg):
         return msg.replace('\'', '\\\'')
 
     def _remember_new_data(self, msg):
-        self._db.add_new_row(msg['user_id'], self._prepare_msg(msg['body'][13:]))
+        self._db.add_new_row(
+            msg['user_id'],
+            self._prepare_msg(msg['body'][len(self._bot_name) + 9:]),
+            is_intelligent=self._is_intelligent
+        )
         self._send(
             msg,
             u"%s, океюшки. Теперь я запомнил: \"%s\" :)" % (
                 self._get_user_name(msg['user_id']),
-                self._prepare_msg(msg['body'][13:])
+                self._prepare_msg(msg['body'][len(self._bot_name) + 9:])
             )
         )
-        print(u'Remember new data: from %s, msg: %s' % (msg['user_id'], self._prepare_msg(msg['body'][13:])))
-        self._ans_list = self._db.select_ids()
+        print(u'Remember new data: from %s, msg: %s' % (
+            msg['user_id'],
+            self._prepare_msg(msg['body'][len(self._bot_name) + 9:])
+        ))
+        # self._ans_list = self._db.select_ids()
+        self.__update_messages()
 
     def _forget_data(self, msg):
-        self._db.del_row(self._prepare_msg(msg['body'][12:]))
+        self._db.del_row(self._prepare_msg(msg['body'][len(self._bot_name) + 8:]))
         self._send(
             msg,
             u"%s, океюшки :( Пожалуй забуду: \"%s\"" % (
                 self._get_user_name(msg['user_id']),
-                self._prepare_msg(msg['body'][12:])
+                self._prepare_msg(msg['body'][len(self._bot_name) + 8:])
             )
         )
-        print(u'Remove data: from %s, msg: %s' % (msg['user_id'], self._prepare_msg(msg['body'][12:])))
-        self._ans_list = self._db.select_ids()
+        print(u'Remove data: from %s, msg: %s' % (
+            msg['user_id'],
+            self._prepare_msg(msg['body'][len(self._bot_name) + 8:])
+        ))
+        # self._ans_list = self._db.select_ids()
+        self.__update_messages()
 
     def _get_help(self):
         return u"""
@@ -121,9 +154,12 @@ class MainBot(object):
 
             Список моих команд на сегодня:
               * Выучить что-то новое: name запомни <предложение/фраза>
-              * [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
               * Выдать вероятность события: name инфа <фраза/название/событие>
+              * Сменить режим общения бота: name смени режим
               * Просто попиздеть: name <предложение/фраза>
+              * Получить список новостей: name новости
+              * Получить ТВ-программу на ближайшее время: name телепрограмма
+              * [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
               * [Для админов] Выключить бота: name завали ебало
               * [Для админов] Включить бота : name камбекнись
 
@@ -138,47 +174,46 @@ class MainBot(object):
         return u'%s' % self._vk.users.get(user_ids=[user_id])[0]['first_name']
 
     def __command_bot_off(self, msg):
-        if msg['body'][:17] == u'%s завали ебало' % self._bot_name and not self._is_msg_in_ignore(msg):
+        if msg['body'][:len(self._bot_name) + 13] == u'%s завали ебало' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
             self._add_msg_to_ignore(msg)
-            if msg['user_id'] in ADMIN_LIST:
-                self._send(msg, u'%s, океюшки! Уебываю...' % self._get_user_name(msg['user_id']))
-                self._disable = True
+            self._send(msg, u'%s, океюшки! Уебываю...' % self._get_user_name(msg['user_id']))
+            self._disable = True
             return True
         return False
 
     def __command_bot_on(self, msg):
-        if msg['body'][:17] == u'%s камбекнись' % self._bot_name and not self._is_msg_in_ignore(msg):
+        if msg['body'][:len(self._bot_name) + 13] == u'%s камбекнись' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
             self._add_msg_to_ignore(msg)
-            if msg['user_id'] in ADMIN_LIST:
-                self._send(msg, u'%s, Я вернулся!' % self._get_user_name(msg['user_id']))
-                self._disable = False
+            self._send(msg, u'%s, Я вернулся!' % self._get_user_name(msg['user_id']))
+            self._disable = False
             return True
         return False
 
     def __command_bot_help(self, msg):
-        if msg['body'][:12] == u'%s команды' % self._bot_name and not self._is_msg_in_ignore(msg):
+        if msg['body'][:len(self._bot_name) + 8] == u'%s команды' % self._bot_name and not self._is_msg_in_ignore(msg):
             self._add_msg_to_ignore(msg)
             self._send(msg, '%s, %s' % (self._get_user_name(msg['user_id']), self._get_help()))
             return True
         return False
 
     def __command_bot_forget(self, msg):
-        if msg['body'][:12] == u'%s забудь ' % self._bot_name and not self._is_msg_in_ignore(msg):
+        if msg['body'][:len(self._bot_name) + 8] == u'%s забудь ' % self._bot_name and not self._is_msg_in_ignore(msg):
             self._add_msg_to_ignore(msg)
-            if msg['user_id'] in ADMIN_LIST:
-                self._forget_data(msg)
+            self._forget_data(msg)
             return True
         return False
 
     def __command_bot_remember(self, msg):
-        if msg['body'][:13] == u'%s запомни ' % self._bot_name and not self._is_msg_in_ignore(msg):
+        if msg['body'][:len(self._bot_name) + 9] == u'%s запомни ' % self._bot_name and not self._is_msg_in_ignore(msg):
             self._add_msg_to_ignore(msg)
             self._remember_new_data(msg)
             return True
         return False
 
     def __command_bot_probability(self, msg):
-        if msg['body'][:10] == u'%s инфа ' % self._bot_name and not self._is_msg_in_ignore(msg):
+        if msg['body'][:len(self._bot_name) + 6] == u'%s инфа ' % self._bot_name and not self._is_msg_in_ignore(msg):
             self._add_msg_to_ignore(msg)
             probability = random.randint(0, 100)
             # text = u''
@@ -197,9 +232,38 @@ class MainBot(object):
         return False
 
     def __command_bot_message(self, msg):
-        if msg['body'][:4] == self._bot_name and not self._is_msg_in_ignore(msg) and len(msg['body']) > 5:
+        if msg['body'][:len(self._bot_name)] == self._bot_name \
+                and not self._is_msg_in_ignore(msg) and len(msg['body']) > 5:
             self._add_msg_to_ignore(msg)
             self._send_message_from_db(msg)
+            return True
+        return False
+
+    def __command_bot_change_mod(self, msg):
+        if msg['body'][:len(self._bot_name) + 12] == u'%s смени режим' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
+            self._add_msg_to_ignore(msg)
+            self._is_intelligent = not self._is_intelligent
+            self._send(msg, u'%s, океюшки! Теперь я %s.' % (
+                self._get_user_name(msg['user_id']),
+                u'интеллигент' if self._is_intelligent else u'обычный'
+            ))
+            return True
+        return False
+
+    def __command_bot_news(self, msg):
+        if msg['body'][:len(self._bot_name) + 8] == u'%s новости' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
+            self._add_msg_to_ignore(msg)
+            self._send(msg, u'%s,\n%s' % (self._get_user_name(msg['user_id']), self._news.get_news()))
+            return True
+        return False
+
+    def __command_bot_tvlist(self, msg):
+        if msg['body'][:len(self._bot_name) + 14] == u'%s телепрограмма' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
+            self._add_msg_to_ignore(msg)
+            self._send(msg, u'%s,\n%s' % (self._get_user_name(msg['user_id']), self._news.get_tvlist()))
             return True
         return False
 
@@ -207,14 +271,20 @@ class MainBot(object):
         if msg_list:
             for msg in msg_list:
                 if not self._disable:
-                    self.__command_bot_off(msg)
+                    if msg['user_id'] in ADMIN_LIST:
+                        self.__command_bot_off(msg)
+                        self.__command_bot_forget(msg)
+
                     self.__command_bot_help(msg)
-                    self.__command_bot_forget(msg)
                     self.__command_bot_remember(msg)
                     self.__command_bot_probability(msg)
+                    self.__command_bot_change_mod(msg)
+                    self.__command_bot_news(msg)
+                    self.__command_bot_tvlist(msg)
                     self.__command_bot_message(msg)
                 else:
-                    self.__command_bot_on(msg)
+                    if msg['user_id'] in ADMIN_LIST:
+                        self.__command_bot_on(msg)
 
     def __main(self):
         while True:
