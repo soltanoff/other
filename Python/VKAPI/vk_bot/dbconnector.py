@@ -52,13 +52,13 @@ class DBConnector(object):
             ''' % text)
         self._db.commit()
 
-    def add_new_row(self, user_id, text):
+    def add_new_row(self, user_id, text, is_intelligent=False):
         if not self.get_exists(text):
             self._cursor.execute(u'''
                 INSERT INTO
-                    messages(creator_id, message, create_date)
-                VALUES(%s, '%s', CURRENT_DATE())
-                ''' % (user_id, text)
+                    messages(creator_id, message, create_date, is_intelligent)
+                VALUES(%s, '%s', CURRENT_DATE(), %s)
+                ''' % (user_id, text, 1 if is_intelligent else 0)
             )
             self._db.commit()
 
