@@ -9,8 +9,8 @@ import time
 # import re
 
 BOT_SIGN_IN = {
-    'login': u'+79531472458',
-    'password': u'huluna2013'
+    'login': u'login@login',
+    'password': u'password'
 }
 ADMIN_LIST = [77698338, 96996256]
 VERSION = 'v0.8.9'
