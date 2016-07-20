@@ -13,7 +13,7 @@ BOT_SIGN_IN = {
     'password': u'huluna2013'
 }
 ADMIN_LIST = [77698338, 96996256]
-VERSION = 'v0.8.9'
+VERSION = 'v0.9.1'
 
 
 class MainBot(object):
@@ -156,9 +156,10 @@ class MainBot(object):
               * Выучить что-то новое: name запомни <предложение/фраза>
               * Выдать вероятность события: name инфа <фраза/название/событие>
               * Сменить режим общения бота: name смени режим
-              * Просто попиздеть: name <предложение/фраза>
+              * Получить текущий режим бота: name режим
               * Получить список новостей: name новости
               * Получить ТВ-программу на ближайшее время: name телепрограмма
+              * Просто попиздеть: name <предложение/фраза>
               * [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
               * [Для админов] Выключить бота: name завали ебало
               * [Для админов] Включить бота : name камбекнись
@@ -251,6 +252,17 @@ class MainBot(object):
             return True
         return False
 
+    def __command_bot_current_mod(self, msg):
+        if msg['body'][:len(self._bot_name) + 6] == u'%s режим' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
+            self._add_msg_to_ignore(msg)
+            self._send(msg, u'%s, я %s.' % (
+                self._get_user_name(msg['user_id']),
+                u'интеллигент' if self._is_intelligent else u'обычный'
+            ))
+            return True
+        return False
+
     def __command_bot_news(self, msg):
         if msg['body'][:len(self._bot_name) + 8] == u'%s новости' % self._bot_name \
                 and not self._is_msg_in_ignore(msg):
@@ -279,6 +291,7 @@ class MainBot(object):
                     self.__command_bot_remember(msg)
                     self.__command_bot_probability(msg)
                     self.__command_bot_change_mod(msg)
+                    self.__command_bot_current_mod(msg)
                     self.__command_bot_news(msg)
                     self.__command_bot_tvlist(msg)
                     self.__command_bot_message(msg)
