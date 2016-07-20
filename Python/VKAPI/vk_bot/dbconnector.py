@@ -62,7 +62,19 @@ class DBConnector(object):
             )
             self._db.commit()
 
-    def select_ids(self):
-        return self._query('''
-            SELECT id FROM messages WHERE deleted = 0;
-            ''')
+    def select_ids(self, is_intelligent=False, is_question_answer=False):
+        stmt = u'''
+            SELECT
+                id
+            FROM
+                messages
+            WHERE
+                deleted = 0
+                %s
+                %s
+            ;
+        ''' % (
+            u'AND is_intelligent = 1' if is_intelligent else '',
+            u'AND is_question_answer = 1' if is_question_answer else ''
+        )
+        return self._query(stmt)
