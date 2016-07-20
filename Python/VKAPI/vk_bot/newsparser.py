@@ -7,15 +7,12 @@ BASE_URL = 'http://www.yandex.ru'
 
 
 class NewsParser(object):
-    def __init__(self):
-        self._html = self.__get_html(BASE_URL)
-
     @staticmethod
     def __get_html(url):
         return urllib2.urlopen(url).read()
 
     def __parse_news(self):
-        soup = BeautifulSoup(self._html, "html.parser")
+        soup = BeautifulSoup(self.__get_html(BASE_URL), "html.parser")
         table = soup.find('div', class_="news")
 
         rf_news = table.contents[0].contents[0].contents[1].contents[0].contents
@@ -31,7 +28,7 @@ class NewsParser(object):
         return news
 
     def __parse_tvlist(self):
-        soup = BeautifulSoup(self._html, 'html.parser')
+        soup = BeautifulSoup(self.__get_html(BASE_URL), 'html.parser')
         y = soup.find('ul', class_="list tv-list")
 
         tvlist = []
