@@ -74,7 +74,7 @@ class DBConnector(object):
                 %s
             ;
         ''' % (
-            u'AND is_intelligent = 1' if is_intelligent else '',
-            u'AND is_question_answer = 1' if is_question_answer else ''
+            u'AND is_intelligent = 1' if is_intelligent else u'',
+            u'AND is_question_answer = 1' if is_question_answer else u'AND is_question_answer = 0'
         )
         return self._query(stmt)
