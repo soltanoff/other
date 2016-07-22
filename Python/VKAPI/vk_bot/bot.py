@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 from dbconnector import DBConnector
 from newsparser import NewsParser
+from botmath import BotMath
 from logger import Logger
 import random
 import vk_api
@@ -13,7 +14,7 @@ BOT_SIGN_IN = {
     'password': u'password'
 }
 ADMIN_LIST = [77698338, 96996256]
-VERSION = 'v0.9.1'
+VERSION = 'v1.0.2'
 
 
 class MainBot(object):
@@ -36,6 +37,7 @@ class MainBot(object):
         self._logger = Logger()
         self._db = DBConnector()
         self._news = NewsParser()
+        self._math = BotMath()
 
         self._vk = self._vk_session.get_api()
 
@@ -97,7 +99,8 @@ class MainBot(object):
             )
 
     def _get_random_message(self, msg_list):
-        return self._db.get_message(msg_list[random.randint(0, len(msg_list) - 1)][0])
+        # d = random.randint(0, len(msg_list) - 1)
+        return self._db.get_message(random.choice(msg_list))# [d][0])
 
     def _send_message_from_db(self, msg):
         if '?' in msg['body']:
@@ -155,9 +158,12 @@ class MainBot(object):
             Список моих команд на сегодня:
               * Выучить что-то новое: name запомни <предложение/фраза>
               * Выдать вероятность события: name инфа <фраза/название/событие>
+              * Выбирает случайного участника беседы: name кто <предложение/фраза>
               * Сменить режим общения бота: name смени режим
               * Получить текущий режим бота: name режим
               * Получить список новостей: name новости
+              * Посчитать пример: name м
+              * Справка по математике: name м помощь
               * Получить ТВ-программу на ближайшее время: name телепрограмма
               * Просто попиздеть: name <предложение/фраза>
               * [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
@@ -171,8 +177,20 @@ class MainBot(object):
               * Дмитрий - http://vk.com/id77698338
         """.replace('name', self._bot_name).replace('version', VERSION)
 
+    def _get_bot_id(self):
+        return int(self._vk_session.token['user_id'])
+
     def _get_user_name(self, user_id):
         return u'%s' % self._vk.users.get(user_ids=[user_id])[0]['first_name']
+
+    def _get_user_lastname(self, user_id):
+        return u'%s' % self._vk.users.get(user_ids=[user_id])[0]['last_name']
+
+    def _get_chat_users_ids(self, chat_id):
+        users = self._vk.messages.getChatUsers(chat_id=chat_id)
+        users.remove(self._get_bot_id())
+        idx = random.randint(0, len(users) - 1)
+        return u'%s %s' % (self._get_user_name(users[idx]), self._get_user_lastname(users[idx]))
 
     def __command_bot_off(self, msg):
         if msg['body'][:len(self._bot_name) + 13] == u'%s завали ебало' % self._bot_name \
@@ -279,6 +297,45 @@ class MainBot(object):
             return True
         return False
 
+    def __command_bot_math(self, msg):
+        if msg['body'][:len(self._bot_name) + 9] == u'%s м помощь' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
+            self._add_msg_to_ignore(msg)
+            self._send(msg, u'%s, вот тебе справка по моей математике.\n%s' % (
+                self._get_user_name(msg['user_id']),
+                self._math.get_help()
+            ))
+            return True
+
+        if msg['body'][:len(self._bot_name) + 3] == u'%s м ' % self._bot_name \
+                and not self._is_msg_in_ignore(msg):
+            self._add_msg_to_ignore(msg)
+            self._send(msg, u'%s, %s' % (
+                self._get_user_name(msg['user_id']),
+                self._math.calculate(msg['body'][len(self._bot_name) + 3:])
+            ))
+            return True
+        return False
+
+    def __command_bot_who_is(self, msg):
+        if msg['body'][:len(self._bot_name) + 4] == u'%s кто' % self._bot_name \
+                and not self._is_msg_in_ignore(msg) and 'chat_id' in msg:
+            self._add_msg_to_ignore(msg)
+            user_name = self._get_chat_users_ids(msg['chat_id'])
+            answer = [
+                u'да это же %s' % user_name,
+                u'я считаю, что это %s' % user_name,
+                u'инфа сотка, что это %s' % user_name,
+                u'полагаю, что это %s' % user_name,
+                u'это %s, зуб даю' % user_name
+            ]
+            self._send(msg, u'%s, %s' % (
+                self._get_user_name(msg['user_id']),
+                answer[random.randint(0, len(answer) - 1)]
+            ))
+            return True
+        return False
+
     def __analyze_messages(self, msg_list=None):
         if msg_list:
             for msg in msg_list:
@@ -294,6 +351,8 @@ class MainBot(object):
                     self.__command_bot_current_mod(msg)
                     self.__command_bot_news(msg)
                     self.__command_bot_tvlist(msg)
+                    self.__command_bot_math(msg)
+                    self.__command_bot_who_is(msg)
                     self.__command_bot_message(msg)
                 else:
                     if msg['user_id'] in ADMIN_LIST:
