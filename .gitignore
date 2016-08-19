@@ -48,14 +48,4 @@ Temporary Items
 Visual Prolog/Simply expert system/README(not ready).md
 Python/VKAPI/vk_bot/.idea/modules.xml
 *.name
-Python/VKAPI/vk_bot/.idea/dictionaries/Admin.xml
-Python/VKAPI/vk_bot/.idea/vk_bot.iml
-Python/VKAPI/vk_bot/.idea/misc.xml
-Python/VKAPI/vk_bot/.idea/workspace.xml
-Python/VKAPI/vk_bot/vk_config.json
-Python/VKAPI/vk_bot/.idea/vcs.xml
-Python/VKAPI/vk_bot/bot.pyc
-Python/VKAPI/vk_bot/logger.pyc
-Python/VKAPI/vk_bot/newsparser.pyc
-Python/VKAPI/vk_bot/dbconnector.pyc
-Python/VKAPI/vk_bot/test.py
+*.pyc
