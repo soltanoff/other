@@ -2,10 +2,35 @@
 # -*- coding: utf8 -*-
 from math import *
 SAVE_LIST = [
-    'math', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'factorial'
-    'cos', 'cosh', 'degrees', 'e', 'exp', 'fabs', 'floor', 'fmod',
-    'frexp', 'hypot', 'ldexp', 'log', 'log10', 'modf', 'pi',
-    'pow', 'radians', 'sin', 'sinh', 'sqrt', 'tan', 'tanh'
+    'math',
+    'acos',
+    'asin',
+    'atan',
+    'atan2',
+    'ceil',
+    'factorial'
+    'cos',
+    'cosh',
+    'degrees',
+    'e',
+    'exp',
+    'fabs',
+    'floor',
+    'fmod',
+    'frexp',
+    'hypot',
+    'ldexp',
+    'log',
+    'log10',
+    'modf',
+    'pi',
+    'pow',
+    'radians',
+    'sin',
+    'sinh',
+    'sqrt',
+    'tan',
+    'tanh'
 ]
 
 
@@ -60,7 +85,8 @@ class BotMath(object):
         try:
             x = eval(expr, {"__builtins__": None}, self._safe_dict)
             return u'ответ: %s' % x if x else 'none'
-        except:
+        except Exception as error_msg:
+            print('[BotMath] %s' % error_msg)
             return u'ошибка вычисления, ты ввел что-то неправильно. Читай справку.'
 
 

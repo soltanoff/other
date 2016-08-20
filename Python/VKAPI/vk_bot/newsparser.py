@@ -27,19 +27,24 @@ class NewsParser(object):
             )
         return news
 
-    def __parse_tvlist(self):
+    def __parse_tv_list(self):
         soup = BeautifulSoup(self.__get_html(BASE_URL), 'html.parser')
         y = soup.find('ul', class_="list tv-list")
 
-        tvlist = []
-        for x in y.find_all('li'):
-            tvlist.append(
-                {
-                    'TIME': x.contents[0].text,
-                    'TVSHOW': x.contents[1].text
-                }
-            )
-        return tvlist
+        tv_list = []
+        html_list = y.find_all('li')
+        for x in html_list:
+            try:
+                tv_list.append(
+                    {
+                        'TIME': x.contents[0].text,
+                        'TV_SHOW': x.contents[1].text
+                    }
+                )
+            except Exception as error_msg:
+                print("[tv_list] %s" % error_msg)
+
+        return tv_list
 
     def get_news(self):
         news = self.__parse_news()
@@ -53,11 +58,11 @@ class NewsParser(object):
             text += u'\n%s) %s\nПРУВ: %s\n' % (count, obj['NEWS'], obj['LINK'])
         return text
 
-    def get_tvlist(self):
-        tvlist = self.__parse_tvlist()
+    def get_tv_list(self):
+        tv_list = self.__parse_tv_list()
         count = 0
         text = u'Телепрограмма:'
-        for obj in tvlist:
+        for obj in tv_list:
             count += 1
-            text += u'\n%s) %s - %s' % (count, obj['TIME'], obj['TVSHOW'])
+            text += u'\n%s) %s - %s' % (count, obj['TIME'], obj['TV_SHOW'])
         return text
