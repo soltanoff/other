@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-MESSAGE_HISTORY = 'ignore_msgs.cfg'
+from config import MESSAGE_HISTORY
 
 
 class Logger(object):
@@ -26,4 +26,3 @@ class Logger(object):
             f.close()
         except Exception as error_msg:
             print u'[BOT ERROR]: %s' % error_msg
-            pass

@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 import urllib2
 from bs4 import BeautifulSoup
-
-BASE_URL = 'http://www.yandex.ru'
+from config import BASE_URL
 
 
 class NewsParser(object):

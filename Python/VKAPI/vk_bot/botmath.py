@@ -1,37 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 from math import *
-SAVE_LIST = [
-    'math',
-    'acos',
-    'asin',
-    'atan',
-    'atan2',
-    'ceil',
-    'factorial'
-    'cos',
-    'cosh',
-    'degrees',
-    'e',
-    'exp',
-    'fabs',
-    'floor',
-    'fmod',
-    'frexp',
-    'hypot',
-    'ldexp',
-    'log',
-    'log10',
-    'modf',
-    'pi',
-    'pow',
-    'radians',
-    'sin',
-    'sinh',
-    'sqrt',
-    'tan',
-    'tanh'
-]
+from config import SAVE_LIST
 
 
 class BotMath(object):

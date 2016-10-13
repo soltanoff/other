@@ -1,0 +1,8 @@
+# TODO LIST:
+* Rename some classes
+* Refactoring bot.py, dbconnector.py, logger.py
+* Rename all *.py files
+* Create config.py. Fill this file all constans and some settings parameters
+* Write new db decorator, new db classes
+* Restruct some classes
+* Test bot with orther name (other vk account)
