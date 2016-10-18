@@ -16,6 +16,8 @@ For example, you need to vychilist 5 ^ 70 mod 62, then
 python esm.py 5 70 62
 
 
+Python: Python 2.7.*
+
 # Example
 
 Algorithms for fast modular exponentiation
@@ -97,6 +99,3 @@ a^d mod m => 789^654 mod 89
 	
 
 4) Result: 789^654 mod 89 = 34
-
-
-Python: Python 2.7.*
