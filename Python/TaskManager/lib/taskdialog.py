@@ -3,7 +3,7 @@
 from PyQt4 import QtGui
 from PyQt4.QtCore import Qt
 
-from config import DEFAULT_TASK_NAME, TASK_PRIORITY
+from config import DEFAULT_TASK_NAME, TASK_PRIORITY, RESOURCES_LIST
 from ui.ui_taskdialog import Ui_TaskDialog
 
 
@@ -20,3 +20,5 @@ class CTaskDialog(QtGui.QDialog, Ui_TaskDialog):
         self.edtTaskName.setText(DEFAULT_TASK_NAME % parent.taskIndex)
         self.cmbTaskPriority.addItems(TASK_PRIORITY)
         self.cmbTaskPriority.setCurrentIndex(1)
+
+        self.lstAvailableResources.addItems(RESOURCES_LIST)
