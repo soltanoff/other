@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-from threading import Event, Thread, Timer, Condition, Lock
-from time import sleep
+import os
+from threading import Thread, Condition, Lock
 
-from lib.threadroutines import routine_1
 from logic.planning import createProcess, SJF
+from logic.threadroutines import routine_1
 
 
 class TmThread(Thread):
@@ -57,7 +57,7 @@ def ti():
     print end_time - begin_time
 
 
-def main():
+def main1():
     ThreadList = [
         createProcess('Thread #1', routine_1),
         createProcess('Thread #2', routine_1),
@@ -70,6 +70,55 @@ def main():
     f.start()
     # ============================================================
     f.sjfThread.join()
+
+
+def main2():
+    g = [
+        {
+            'priority': 0,
+            'time': 50,
+            'finished': 1
+        },
+        {
+            'priority': 0,
+            'time': 30,
+            'finished': 0
+        },
+        {
+            'priority': 1,
+            'time': 10,
+            'finished': 1
+        },
+        {
+            'priority': 1,
+            'time': 3,
+            'finished': 1
+        },
+        {
+            'priority': 2,
+            'time': 2,
+            'finished': 0
+        },
+        {
+            'priority': 0,
+            'time': 10,
+            'finished': 0
+        }
+    ]
+    # print sorted(g, key=lambda k: k['time'])
+    print sorted(g, key=lambda k: (k['finished'], k['priority'], k['time']))
+    g.sort(key=lambda k: (k['finished'], k['priority'], k['time']))
+    print g
+
+
+def main3():
+    f =  os.listdir(os.getcwd() + '\\resources')
+    pass
+
+
+def main():
+    pass
+
 
 if __name__ == '__main__':
     main()
