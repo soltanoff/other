@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 import sys
+
 from PyQt4 import QtGui
 
 from config import VERSION
-from logic.taskmanager import CTaskManager
+from lib.taskmanager import CTaskManager
 
 
 def main():
@@ -22,7 +23,8 @@ def main():
             u'Непредвиденная ошибка:\n%s' % e.msg if hasattr(e, 'msg') else e.message,
             QtGui.QMessageBox.Ok
         )
-
+    finally:
+        sys.exit()
 
 if __name__ == '__main__':
     main()
