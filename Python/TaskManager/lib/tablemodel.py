@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-from PyQt4 import QtCore
+from PyQt4 import QtCore, QtGui
 
-from config import TASK_PRIORITY
+from config import TASK_PRIORITY, TASK_STATUS
 
 
 class CTableModel(QtCore.QAbstractTableModel):
@@ -19,6 +19,21 @@ class CTableModel(QtCore.QAbstractTableModel):
         return len(self.header)
 
     def data(self, index, role):
+        self.layoutChanged.emit()
+
+        if role == QtCore.Qt.FontRole:
+            row = index.row()
+            col = index.column()
+            if col == 2 and self.body[row]['status'] == 2:
+                font = QtGui.QFont()
+                font.setBold(True)
+                font.setItalic(True)
+                return QtCore.QVariant(font)
+            if col == 2 and self.body[row]['status'] == 3:
+                font = QtGui.QFont()
+                font.setBold(True)
+                return QtCore.QVariant(font)
+
         if not index.isValid():
             return QtCore.QVariant()
         elif role != QtCore.Qt.DisplayRole and role != QtCore.Qt.EditRole:
@@ -32,7 +47,7 @@ class CTableModel(QtCore.QAbstractTableModel):
             elif col == 1:
                 value = TASK_PRIORITY[self.body[row]['priority']]
             elif col == 2:
-                value = self.body[row]['status']
+                value = TASK_STATUS[self.body[row]['status']]
             elif col == 3:
                 value = self.body[row]['time']
 
