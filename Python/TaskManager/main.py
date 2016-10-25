@@ -13,7 +13,7 @@ def main():
         print u'[TaskManager] Current programm version: %s' % VERSION
 
         QtGui.qApp = QtGui.QApplication(sys.argv)
-        win = CTaskManager()
+        win = CTaskManager(processorCount=5)
         win.show()
         QtGui.qApp.exec_()
     except Exception as e:
