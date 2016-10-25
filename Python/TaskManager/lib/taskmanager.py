@@ -16,7 +16,7 @@ from ui.ui_taskmanager import Ui_MainDialog
 
 
 class CTaskManager(QtGui.QDialog, Ui_MainDialog):
-    def __init__(self, processorCount=2):
+    def __init__(self, processorCount=1):
         # initialize ui
         QtGui.QDialog.__init__(self)
         Ui_MainDialog.__init__(self)
@@ -60,6 +60,7 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
         self.taskIndex = 0
 
         self.queue = CThreadQueue()
+        self.queue.pos = processorCount
         self.sjfNewThreadEvent = Event()
 
         self.processorsList = []
@@ -79,6 +80,8 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
         else:
             for x in self.processorsList:
                 x.resumeCurrentThread()
+        # self.tblTask.model().body = self.queue.data  # self.processor.queue.data
+        self.tblTask.model().layoutChanged.emit()
         # self.tblTask.model().layoutChanged.emit()
 
     @QtCore.pyqtSlot()
@@ -98,7 +101,7 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
             self.queue.push(x)
             self.queue.startPlanning()
             # self.processor.startPlanning()
-            if not self.sjfNewThreadEvent.isSet():
+            if not self.sjfNewThreadEvent.isSet() and not self.chkPauseAll.isChecked():
                 self.sjfNewThreadEvent.set()
             # self.processor.allThreads.append(x)
             self.tblTask.model().body = self.queue.data  # self.processor.queue.data

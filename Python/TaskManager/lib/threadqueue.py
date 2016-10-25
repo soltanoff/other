@@ -19,6 +19,7 @@ class CThreadQueue(object):
     """
     def __init__(self, queue=list(dict())):
         self.data = queue
+        self.pos = 1
 
     def push(self, x):
         self.data.append(x)
@@ -41,9 +42,9 @@ class CThreadQueue(object):
         self.changeStatus()
         self.data.sort(key=lambda k: (k['status'], k['priority'], k['time']))
 
-    def changeStatus(self, pos=1):
-        for x in self.data[pos:]:
-            if x['status'] not in [4, 2]:
+    def changeStatus(self):
+        for x in self.data[self.pos:]:
+            if x['status'] not in [4, 2]:  # and not (x['status'] == 1 and x['processor'] == '- none -'):
                 x['status'] = 3
 
     def removeFinished(self):
