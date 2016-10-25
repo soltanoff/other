@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-from config import TASK_STATUS
+# from config import TASK_STATUS
 
 
 class CThreadQueue(object):
@@ -24,10 +24,30 @@ class CThreadQueue(object):
         self.data.append(x)
 
     def pop(self):
-        if self.data and self.data[0]['status'] != 4:
-            return self.data[0]
+        index = 0
+        if self.data:
+            while index < len(self.data):
+                if self.data[index]['status'] not in [4, 2]:
+                    self.data[index]['status'] = 2
+                    return self.data[index]
+                index += 1
+            return None
         else:
             return None
+
+    # SJF sorting
+    def startPlanning(self):
+        self.data.sort(key=lambda k: (k['status'], k['priority'], k['time']))
+        self.changeStatus()
+        self.data.sort(key=lambda k: (k['status'], k['priority'], k['time']))
+
+    def changeStatus(self, pos=1):
+        for x in self.data[pos:]:
+            if x['status'] not in [4, 2]:
+                x['status'] = 3
+
+    def removeFinished(self):
+        self.data = [i for i in self.data if i['status'] != 4]
 
     # def sort(self):
     #    self.data.sort(key=lambda k: (k['status'], k['priority'], k['time']))
