@@ -65,14 +65,14 @@
      </item>
      <item row="2" column="0">
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="1">
+       <item row="0" column="2">
         <widget class="QPushButton" name="btnNewTask">
          <property name="text">
           <string>Добавить процесс</string>
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
+       <item row="0" column="3">
         <widget class="QPushButton" name="btnResourceTable">
          <property name="enabled">
           <bool>true</bool>
@@ -92,6 +92,13 @@
          </property>
          <property name="checked">
           <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="btnClearFinished">
+         <property name="text">
+          <string>Удалить завершенные</string>
          </property>
         </widget>
        </item>
