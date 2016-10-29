@@ -3,7 +3,9 @@
 import os
 from threading import Thread, Condition, Lock
 
-from logic.planning import createProcess, SJF
+from PyQt4.QtCore import pyqtSignal
+
+from logic.planning import createProcess, Processor
 from logic.threadroutines import routine_1
 
 
@@ -64,12 +66,12 @@ def main1():
         createProcess('Thread #3', routine_1)
     ]
     # ============================================================
-    f = SJF()
+    f = Processor()
     for x in ThreadList:
         f.queue.push(x)
     f.start()
     # ============================================================
-    f.sjfThread.join()
+    f.ProcessorThread.join()
 
 
 def main2():
@@ -116,8 +118,193 @@ def main3():
     pass
 
 
+def main4():
+    q = []
+
+    class A(object):
+        def __init__(self, q):
+            self.w = q
+
+    a = A(q)
+
+    def f(g):
+        g()
+
+    # f = lambda x, y: x = y
+    # pass
+
+
+def main5():
+    # FIXME: have some troubles when use 3 process
+    def mainFunc(self):
+        if self.currentThread:
+            while not self.currentThread['eventFinish'].isSet():
+                self.queue.changeStatus(checkFinished=True)
+                self.queue.startPlanning()
+                if self.currentThread['time'] <= TASK_TIME_QUANTUM[self.currentThread['priority']]:
+                    return  # wait current executed thread
+                else:
+                    MAIN_MUTEX.acquire()
+                    try:
+                        self.secondCurrentThread = self.queue.last()
+                    except Exception as e:
+                        print '[PROCESSOR_ERROR] %s' % e.msg if hasattr(e, 'msg') else e.message
+                    finally:
+                        MAIN_MUTEX.release()
+
+                    if self.secondCurrentThread is None:
+                        return
+
+                    currentQuantum = TASK_TIME_QUANTUM[self.currentThread['priority']]
+                    secondQuantum = TASK_TIME_QUANTUM[self.secondCurrentThread['priority']]
+                    while not self.currentThread['eventFinish'].isSet():
+                        if currentQuantum:  # and self.currentThread['status'] != 4:
+                            self.currentThread['eventStart'].set()
+                            self.currentThread['status'] = 2
+                            if not secondQuantum:
+                                secondQuantum = TASK_TIME_QUANTUM[self.secondCurrentThread['priority']]
+                            currentQuantum -= 1
+                            sleep(1)
+                        else:
+                            self.currentThread['eventStart'].clear()
+                            self.currentThread['status'] = 3
+                            if not self.secondCurrentThread['thread'].isAlive() and not self.secondCurrentThread['eventFinish'].isSet():
+                                try:
+                                    self.secondCurrentThread['thread'].start()
+                                except:
+                                    pass
+
+                            self.secondCurrentThread['processor'] = self.name
+                            self.secondCurrentThread['status'] = 2
+                            self.secondCurrentThread['eventStart'].set()
+                            if secondQuantum:
+                                secondQuantum -= 1
+                                sleep(1)
+                            else:
+                                self.secondCurrentThread['eventStart'].clear()
+                                if self.secondCurrentThread['eventFinish'].isSet():
+                                    self.secondCurrentThread['status'] = 4
+                                else:
+                                    self.secondCurrentThread['status'] = 3
+                                currentQuantum = TASK_TIME_QUANTUM[self.currentThread['priority']]
+                        self.queue.changeStatus(checkFinished=True)
+                    self.currentThread['status'] = 3
+
+    def sjfRoutine1(self):
+        while self.enable:
+            self.queue.changeStatus(checkFinished=True)
+            self.sjfFinishThreadEvent.wait()    # wait current executed thread
+            # self.mainFunc()
+            if self.currentThread:
+                self.currentThread['eventFinish'].wait()
+                self.currentThread['status'] = 4    # set finish status
+                self.queue.startPlanning()
+                # self.startPlanning()
+            # elif self.secondCurrentThread:
+            #     self.secondCurrentThread['eventFinish'].wait()
+                # self.secondCurrentThread['status'] = 4    # set finish status
+
+
+            MAIN_MUTEX.acquire()
+            try:
+                self.queue.startPlanning()
+                self.currentThread = self.queue.pop()   # can return None
+            except Exception as e:
+                print '[PROCESSOR_ERROR] %s' % e.msg if hasattr(e, 'msg') else e.message
+            finally:
+                MAIN_MUTEX.release()
+
+            if self.currentThread:
+                self.currentThread['status'] = 2
+                self.currentThread['processor'] = self.name
+
+                # if not self.currentThread['thread'].isAlive():
+                #     try:
+                self.currentThread['thread'].start()
+                #    except:
+                #        print '[START_PROCESS] pew pew'
+
+                if not self.suspended:
+                    self.currentThread['eventStart'].set()
+
+                self.currentThread['eventFinish'].clear()
+            else:
+                # MAIN_MUTEX.acquire()
+                # try:
+                #    if self.enable:
+                self.queue.changeStatus(checkFinished=True)
+                self.sjfNewThreadEvent.clear()  # all threads in queue are finished
+                self.sjfNewThreadEvent.wait()   # wait a new thread in queue
+                # except Exception as e:
+                #    print '[PROCESSOR_ERROR] %s' % e.msg if hasattr(e, 'msg') else e.message
+                # finally:
+                #    MAIN_MUTEX.release()
+
+        # if self.currentThread and self.currentThread['thread'].isAlive():
+        #    self.currentThread['thread'].terminate()
+        print u'[TaskManager] Closing...'
+
+    def sjfRoutine_(self):
+        while self.enable:
+            self.sjfFinishThreadEvent.wait()  # wait current executed thread
+            self.mainFunc()
+            if self.currentThread:
+                self.currentThread['eventFinish'].wait()
+                self.currentThread['status'] = 4  # set finish status
+                # self.queue.startPlanning()
+                # self.startPlanning()
+
+            MAIN_MUTEX.acquire()
+            try:
+                self.queue.startPlanning()
+                self.currentThread = self.queue.pop()  # can return None
+            except Exception as e:
+                print '[PROCESSOR_ERROR] %s' % e.msg if hasattr(e, 'msg') else e.message
+            finally:
+                MAIN_MUTEX.release()
+
+            if self.currentThread:
+                self.currentThread['status'] = 2
+                self.currentThread['processor'] = self.name
+                self.currentThread['thread'].start()
+
+                if not self.suspended:
+                    self.currentThread['eventStart'].set()
+
+                self.currentThread['eventFinish'].clear()
+            else:
+                MAIN_MUTEX.acquire()
+                try:
+                    if self.enable:
+                        self.sjfNewThreadEvent.clear()  # all threads in queue are finished
+                        self.sjfNewThreadEvent.wait()  # wait a new thread in queue
+                except Exception as e:
+                    print '[PROCESSOR_ERROR] %s' % e.msg if hasattr(e, 'msg') else e.message
+                finally:
+                    MAIN_MUTEX.release()
+
+                    # if self.currentThread and self.currentThread['thread'].isAlive():
+                    #    self.currentThread['thread'].terminate()
+        print u'[TaskManager] Closing...'
+
+
 def main():
-    pass
+    def callback(name, address):
+        print("Name=%s and address=%s" % (name, address))
+
+    signal = pyqtSignal()
+    signal.connect(callback)
+
+    # Mistake the first argument for a tuple.
+    signal.emit(names=('marcus', 'ottosson'), address='earth')
+    # TypeError: callback() got an unexpected keyword argument 'names'
+
+    # When actually, its a single string value.
+    signal.emit(name='marcus ottosson', address='earth')
+    # Name=marcus ottosson and address=earth
+
+    # Of course, non-keyword arguments works too.
+    signal.emit('marcus ottosson', 'earth')
 
 
 if __name__ == '__main__':
