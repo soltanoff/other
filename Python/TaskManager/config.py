@@ -1,15 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 import os
+from multiprocessing import Lock
+
 from PyQt4 import QtGui, QtCore
 
-VERSION = 'v0.5.1'
+VERSION = 'v0.5.8'
+
+
+MAIN_MUTEX = Lock()
 
 
 TASK_PRIORITY = [
     u'Высокий',     # 0
     u'Средний',     # 1
     u'Низкий'       # 2
+]
+
+TASK_TIME_QUANTUM = [
+    3,              # 0
+    2,              # 1
+    1               # 2
 ]
 
 TASK_STATUS = [
@@ -21,7 +32,7 @@ TASK_STATUS = [
 ]
 
 DEFAULT_TASK_NAME = u'Процесс #%s'
-DEFAULT_PROC_NAME = u'Процессор #%s'
+DEFAULT_PROCESSOR_NAME = u'Процессор #%s'
 DEFAULT_PRIORITY_COLOR =[
     QtGui.QColor(QtCore.Qt.red),        # 0
     QtGui.QColor(QtCore.Qt.blue),       # 1
@@ -35,4 +46,3 @@ except Exception as e:
     print '[CFG_ERROR] %s' % e.msg if hasattr(e, 'msg') else e.message
     RESOURCES_PATH = ''
     RESOURCES_LIST = ''
-
