@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+from threading import Event
+
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import Qt
 
@@ -8,10 +10,9 @@ from lib.resourcedialog import CResourceDialog
 from lib.tablemodel import CTableModel
 from lib.taskdialog import CTaskDialog
 from lib.threadqueue import CThreadQueue
-from lib.utils import setResources
-from logic.planning import Processor, createProcess
+from lib.utils import setResources, createProcess
+from logic.planning import Processor
 from logic.threadroutines import routine_1
-from threading import Event
 from ui.ui_taskmanager import Ui_MainDialog
 
 
@@ -26,17 +27,14 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
         self.setWindowTitle('Taskprocessor %s' % VERSION)
 
         self.tblModel = CTableModel(self)
-        # self.tblProxyModel = QtGui.QSortFilterProxyModel(self)
-        # self.tblProxyModel.setSourceModel(self.tblModel)
 
-        self.tblTask.setModel(self.tblModel)  # tblProxyModel)
+        self.tblTask.setModel(self.tblModel)
         self.tblTask.verticalHeader().setVisible(True)
 
-        # self.tblTask.resizeColumnsToContents()
         self.tblTask.autoFillBackground()
         self.tblTask.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tblTask.horizontalHeader().setDefaultAlignment(QtCore.Qt.AlignCenter)
-        # self.tblTask.row
+
         self.tblTask.setAlternatingRowColors(True)
 
         for col in xrange(self.tblTask.model().columnCount()):
@@ -55,7 +53,6 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
             elif col == 4:
                 self.tblTask.horizontalHeader().resizeSection(col, 120)
                 self.tblTask.horizontalHeader().setResizeMode(col, QtGui.QHeaderView.Custom)
-
 
         self.taskIndex = 0
 
@@ -80,14 +77,12 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
         else:
             for x in self.processorsList:
                 x.resumeCurrentThread()
-        # self.tblTask.model().body = self.queue.data  # self.processor.queue.data
+
         self.tblTask.model().layoutChanged.emit()
-        # self.tblTask.model().layoutChanged.emit()
 
     @QtCore.pyqtSlot()
     def on_btnNewTask_clicked(self):
         dlg = CTaskDialog(self)
-        # dlg.setResources(self.resources.resourceList)
         if dlg.exec_():
             x = createProcess(
                 dlg.edtTaskName.text(),
@@ -96,17 +91,15 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
                 dlg.spbTaskTime.value(),
                 [x.text() for x in dlg.lstAvailableResources.selectedItems()]
             )
-            # self.processor.queue.push(x)
-            # self.processor.startPlanning()
             self.queue.push(x)
             self.queue.startPlanning()
-            # self.processor.startPlanning()
+
             if not self.sjfNewThreadEvent.isSet() and not self.chkPauseAll.isChecked():
                 self.sjfNewThreadEvent.set()
-            # self.processor.allThreads.append(x)
+
             self.tblTask.model().body = self.queue.data  # self.processor.queue.data
             self.tblTask.model().layoutChanged.emit()
-            # self.tblTask.resizeColumnsToContents()
+
             self.taskIndex += 1
 
             self.setResources(self.queue.data)  # self.processor.queue.data)
@@ -126,6 +119,7 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
 
     def setResources(self, process=list()):
         setResources(None, self.lstUsefullResources, process[::-1])
+        setResources(None, self.resources.lstUsefullResources, process[::-1])
 
     def closeEvent(self, event):
         for x in self.processorsList:
