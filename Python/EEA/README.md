@@ -20,7 +20,7 @@ the modular multiplicative inverse is an essential step in RSA public-key encryp
 
 How to enter values:
 
-For example, you need to vychilist 5 ^ -1 mod 62, then
+For example, you need to calculate 5^-1 mod 62, then
 
 python eea.py 5 62
 
@@ -28,5 +28,17 @@ python eea.py 5 62
 Python: Python 2.7.*
 
 # Example
+Extended Euclid Algorithm
 
+ax+by=gcd(a,b)
+Solve by algorithm:
+a^-1 mod b => 5^-1 mod 62
+Extended Euclid Algorithm 
+i       q       a0      a1      x0      x1      y0      y1                                                              
+1       0       62      5       0       1       1       0                                                               
+2       12      5       2       1       -12     0       1                                                               
+3       2       2       1       -12     25      1       -2                                                              
+4       2       1       0       25      -62     -2      5                                                                               
 
+Multiplicative inverse:                                                                                                 
+gcd(a, b) = 1 => Result: 5^-1 mod 62 = 25 
