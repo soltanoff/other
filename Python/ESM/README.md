@@ -11,7 +11,7 @@ Multiplication is carried out in two times faster when using this algorithm.
 
 How to enter values:
 
-For example, you need to vychilist 5 ^ 70 mod 62, then
+For example, you need to calculate 5^70 mod 62, then
 
 python esm.py 5 70 62
 
