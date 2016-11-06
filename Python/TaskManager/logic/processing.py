@@ -11,7 +11,7 @@ class Process(object):
             eventStart=None,
             eventFinish=None,
             priority=0,
-            status=1,
+            status=3,  # 1,
             time=4,
             resources=list()
     ):
