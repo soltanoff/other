@@ -53,7 +53,7 @@ class Ui_TaskDialog(object):
         self.spbTaskTime.setAlignment(QtCore.Qt.AlignCenter)
         self.spbTaskTime.setMinimum(1)
         self.spbTaskTime.setMaximum(300)
-        self.spbTaskTime.setProperty("value", 4)
+        self.spbTaskTime.setProperty("value", 3)
         self.spbTaskTime.setObjectName(_fromUtf8("spbTaskTime"))
         self.gridLayout_4.addWidget(self.spbTaskTime, 2, 1, 1, 1)
         self.gridLayout.addLayout(self.gridLayout_4, 3, 1, 1, 1)

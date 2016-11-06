@@ -24,7 +24,7 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
         self.setupUi(self)
         self.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.setWindowIcon(QtGui.QIcon('favicon.ico'))
-        self.setWindowTitle('TaskManager %s' % VERSION)
+        self.setWindowTitle('Taskprocessor %s' % VERSION)
 
         self.tblModel = CTableModel(self)
 
