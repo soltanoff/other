@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>690</width>
-    <height>325</height>
+    <width>826</width>
+    <height>414</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,6 +30,12 @@
      </item>
      <item row="0" column="1">
       <widget class="QGroupBox" name="groupBox_2">
+       <property name="maximumSize">
+        <size>
+         <width>290</width>
+         <height>16777215</height>
+        </size>
+       </property>
        <property name="title">
         <string>Монитор использования ресурсов</string>
        </property>

@@ -25,7 +25,7 @@ except AttributeError:
 class Ui_ResourceDialog(object):
     def setupUi(self, ResourceDialog):
         ResourceDialog.setObjectName(_fromUtf8("ResourceDialog"))
-        ResourceDialog.resize(690, 325)
+        ResourceDialog.resize(826, 414)
         self.gridLayout_2 = QtGui.QGridLayout(ResourceDialog)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.gridLayout = QtGui.QGridLayout()
@@ -39,6 +39,7 @@ class Ui_ResourceDialog(object):
         self.gridLayout_4.addWidget(self.lstAvailableResources, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
         self.groupBox_2 = QtGui.QGroupBox(ResourceDialog)
+        self.groupBox_2.setMaximumSize(QtCore.QSize(290, 16777215))
         self.groupBox_2.setObjectName(_fromUtf8("groupBox_2"))
         self.gridLayout_5 = QtGui.QGridLayout(self.groupBox_2)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))

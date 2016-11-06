@@ -10,7 +10,7 @@ from lib.taskmanager import CTaskManager
 
 def main():
     try:
-        print u'[TaskManager] Current programm version: %s' % VERSION
+        print u'[TaskManager] Current program version: %s' % VERSION
 
         QtGui.qApp = QtGui.QApplication(sys.argv)
         win = CTaskManager(processorCount=2)

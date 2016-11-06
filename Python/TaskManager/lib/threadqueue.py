@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 # from config import TASK_STATUS
-from config import RESOURCES_LIST, RESOURCES_OWNERSHIP_PERSENT
+from config import RESOURCES_LIST, RESOURCES_OWNERSHIP_PERCENT
 
 
 class CThreadQueue(object):
@@ -77,7 +77,7 @@ class CThreadQueue(object):
         index = 0
         if self.data:
             while index < len(self.data):
-                if len(self.data[index].resources) > RESOURCES_OWNERSHIP_PERSENT * len(RESOURCES_LIST) and \
+                if len(self.data[index].resources) > RESOURCES_OWNERSHIP_PERCENT * len(RESOURCES_LIST) and \
                                 self.data[index].priority != 0:
                     self.data[index].priority = 0
                 index += 1

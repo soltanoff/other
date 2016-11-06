@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>739</width>
-    <height>429</height>
+    <width>903</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,14 +42,26 @@
           </item>
          </layout>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QGroupBox" name="groupBox_2">
+          <property name="maximumSize">
+           <size>
+            <width>250</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="title">
            <string>Монитор использования ресурсов</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_7">
            <item row="0" column="0">
             <widget class="QTreeWidget" name="lstUsefullResources">
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <column>
               <property name="text">
                <string>Процессы</string>
@@ -58,6 +70,13 @@
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Line" name="line">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
          </widget>
         </item>
        </layout>

@@ -33,7 +33,7 @@ TASK_STATUS = [
     'finish'        # 4
 ]
 
-RESOURCES_OWNERSHIP_PERSENT = 0.5
+RESOURCES_OWNERSHIP_PERCENT = 0.5
 
 DEFAULT_TASK_NAME = u'Процесс #%s'
 DEFAULT_PROCESSOR_NAME = u'Процессор #%s'

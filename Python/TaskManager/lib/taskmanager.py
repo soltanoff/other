@@ -42,7 +42,7 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
                 self.tblTask.horizontalHeader().resizeSection(col, 500)
                 self.tblTask.horizontalHeader().setResizeMode(col, QtGui.QHeaderView.Stretch)
             elif col == 1:
-                self.tblTask.horizontalHeader().resizeSection(col, 90)
+                self.tblTask.horizontalHeader().resizeSection(col, 100)
                 self.tblTask.horizontalHeader().setResizeMode(col, QtGui.QHeaderView.Custom)
             elif col == 2:
                 self.tblTask.horizontalHeader().resizeSection(col, 80)
@@ -51,7 +51,7 @@ class CTaskManager(QtGui.QDialog, Ui_MainDialog):
                 self.tblTask.horizontalHeader().resizeSection(col, 65)
                 self.tblTask.horizontalHeader().setResizeMode(col, QtGui.QHeaderView.Custom)
             elif col == 4:
-                self.tblTask.horizontalHeader().resizeSection(col, 120)
+                self.tblTask.horizontalHeader().resizeSection(col, 50)
                 self.tblTask.horizontalHeader().setResizeMode(col, QtGui.QHeaderView.Custom)
 
         self.taskIndex = 0

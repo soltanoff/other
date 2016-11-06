@@ -9,7 +9,7 @@ class CTableModel(QtCore.QAbstractTableModel):
     def __init__(self, parent, body=list()):
         QtCore.QAbstractTableModel.__init__(self)
         self.parent = parent
-        self.header = [u'Имя процесса', u'Процессор', u'Приоритет', u'Статус', u'Время выполнения']
+        self.header = [u'Имя процесса', u'Процессор', u'Приоритет', u'Статус', u'Время']
         self.body = body
 
     def rowCount(self, parent=None):
