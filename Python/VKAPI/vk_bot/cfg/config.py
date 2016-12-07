@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 # logger.py
-MESSAGE_HISTORY = 'ignore_msgs.cfg'
+import emoji
+
+MESSAGE_HISTORY = 'cfg/ignore_msgs.cfg'
 
 # newspapaer.py
 BASE_URL = 'http://www.yandex.ru'
@@ -45,16 +47,17 @@ BOT_SIGN_IN = {
     'password': u'password'
 }
 LITERALS = {
-    'remember_data':    u"{user_name}, океюшки. Теперь я запомнил: \"{message}\" :)",
-    'forget_data':      u"{user_name}, океюшки :( Пожалуй забуду: \"{message}\"",
+    'db_error': emoji.emojize(u'Я не умею разговаривать. :shit:', use_aliases=True),
+    'remember_data':    emoji.emojize(u"{user_name}, океюшки :ok_hand:. Теперь я запомнил: \"{message}\" :)", use_aliases=True),
+    'forget_data':      emoji.emojize(u"{user_name}, океюшки. :pensive: Пожалуй забуду: \"{message}\"", use_aliases=True),
     'commands': {
         'bot_off':      {
             'cmd':      u"{bot_name} завали ебало",
-            'answer':   u"{user_name}, океюшки! Уебываю..."
+            'answer':   emoji.emojize(u"{user_name}, океюшки! Уебываю... :running:", use_aliases=True)
         },
         'bot_on':       {
             'cmd':      u"{bot_name} камбекнись",
-            'answer':   u"{user_name}, Я вернулся! :)"
+            'answer':   emoji.emojize(u"{user_name}, Я вернулся! :stuck_out_tongue_winking_eye:", use_aliases=True)
         },
         'help':         {
             'cmd':      u"{bot_name} команды"
@@ -68,9 +71,9 @@ LITERALS = {
         'probability':  {
             'cmd':      u"{bot_name} инфа ",
             'answer':   {
-                'max':  u"Инфа сотка, бро :) ! {percent}%",
+                'max':  emoji.emojize(u"Инфа :100:, бро :thumbsup:", use_aliases=True),
                 'high': u"Вероятность крайне высока - {percent}%",
-                'min':  u"Вероятность никакущая, бро :( - {percent}%",
+                'min':  emoji.emojize(u"Вероятность никакущая, бро :thumbsdown: - {percent}%", use_aliases=True),
                 'low':  u"Вероятность крайне мала - {percent}%",
                 'mid':  u"Вероятность - {percent}%"
             }
@@ -78,15 +81,15 @@ LITERALS = {
         'change_mod':   {
             'cmd':      u"{bot_name} смени режим",
             'answer':   {
-                'intelligency': u"{user_name}, океюшки! Теперь я интеллигент.",
-                'default':      u"{user_name}, океюшки! Теперь я обычный."
+                 'intelligency': emoji.emojize(u"{user_name}, океюшки! Теперь я интеллигент. :performing_arts:", use_aliases=True),
+                'default':       emoji.emojize(u"{user_name}, океюшки! Теперь я обычный. :ghost:", use_aliases=True)
             }
         },
         'current_mod':  {
             'cmd':      u"{bot_name} режим",
             'answer': {
-                'intelligency': u"{user_name}, я интеллигент.",
-                'default': u"{user_name}, я обычный."
+                'intelligency':     emoji.emojize(u"{user_name}, я интеллигент. :performing_arts:", use_aliases=True),
+                'default':          emoji.emojize(u"{user_name}, я обычный. :ghost:", use_aliases=True)
             }
         },
         'news':         {
@@ -100,19 +103,19 @@ LITERALS = {
                 'help': u"{bot_name} м помощь",
                 'calc': u"{bot_name} м ",
             },
-            'answer':   u"{user_name}, вот тебе справка по моей математике.\n{help}"
+            'answer':   emoji.emojize(u"{user_name}, вот тебе справка по моей математике. :sunglasses:\n{help}", use_aliases=True)
         },
         'who_is':       {
             'cmd':      u"{bot_name} кто",
             'answer':   [
-                u'да это же {user_name}',
+                emoji.emojize(u'да это же :point_right: {user_name}', use_aliases=True),
                 u'я считаю, что это {user_name}',
-                u'инфа сотка, что это {user_name}',
-                u'полагаю, что это {user_name}',
-                u'это {user_name}, зуб даю'
+                emoji.emojize(u'инфа :100:, что это {user_name}', use_aliases=True),
+                emoji.emojize(u'полагаю, что это {user_name} :smiling_imp:', use_aliases=True),
+                emoji.emojize(u'это {user_name}, зуб даю :point_up:', use_aliases=True)
             ]
         }
     }
 }
-ADMIN_LIST = [77698338, 96996256]
-VERSION = 'v1.0.3'
+ADMIN_LIST = [96996256, 77698338, 299314896]
+VERSION = 'v1.2.9'
