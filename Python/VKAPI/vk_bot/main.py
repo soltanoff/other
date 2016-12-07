@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-from bot import MainBot
+from lib.bot import MainBot
 
 
 def main():
