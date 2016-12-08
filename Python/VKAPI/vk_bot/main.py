@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-from lib.bot import MainBot
+from lib.bot import BotEngine
 
 
 def main():
-    bot = MainBot()
+    bot = BotEngine()
     bot.start_bot()
 
 
