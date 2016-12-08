@@ -6,14 +6,14 @@ import time
 import emoji
 import vk_api
 
-from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION
+from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION, DBSETTINGS
 from database.dbconnector import DBConnector
 from database.logger import Logger
 from lib.botmath import BotMath
 from lib.newsparser import NewsParser
 
 
-class MainBot(object):
+class BotEngine(object):
     def __init__(self):
         self.__disable = False
         self.__is_intelligent = False
@@ -32,7 +32,13 @@ class MainBot(object):
 
         self._logger = Logger()
         try:
-            self._db = DBConnector()
+            self._db = DBConnector(
+                DBSETTINGS['user'],
+                DBSETTINGS['password'],
+                DBSETTINGS['host'],
+                DBSETTINGS['port'],
+                DBSETTINGS['database']
+            )
         except Exception as error_msg:
             print('[DATABASE] Error: %s' % error_msg)
             self._db = None
@@ -184,29 +190,29 @@ class MainBot(object):
             Вывод справки по боту.
         """
         return emoji.emojize(u"""
-            :dizzy: Моя текущая версия: version
+:dizzy: Моя текущая версия: version
 
-            :book: Список моих команд на сегодня:
-              :small_red_triangle_down: Выучить что-то новое: name запомни <предложение/фраза>
-              :small_red_triangle_down: Выдать вероятность события: name инфа <фраза/название/событие>
-              :small_red_triangle_down: Выбирает случайного участника беседы: name кто <предложение/фраза>
-              :small_red_triangle_down: Сменить режим общения бота: name смени режим
-              :small_red_triangle_down: Получить текущий режим бота: name режим
-              :small_red_triangle_down: Получить список новостей: name новости
-              :small_red_triangle_down: Посчитать пример: name м
-              :small_red_triangle_down: Справка по математике: name м помощь
-              :small_red_triangle_down: Получить ТВ-программу на ближайшее время: name телепрограмма
-              :small_red_triangle_down: Просто попиздеть: name <предложение/фраза>
-              :star: [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
-              :star: [Для админов] Выключить бота: name завали ебало
-              :star: [Для админов] Включить бота : name камбекнись
+:book: Список моих команд на сегодня:
+:small_red_triangle_down: Выучить что-то новое: name запомни <предложение/фраза>
+:small_red_triangle_down: Выдать вероятность события: name инфа <фраза/название/событие>
+:small_red_triangle_down: Выбирает случайного участника беседы: name кто <предложение/фраза>
+:small_red_triangle_down: Сменить режим общения бота: name смени режим
+:small_red_triangle_down: Получить текущий режим бота: name режим
+:small_red_triangle_down: Получить список новостей: name новости
+:small_red_triangle_down: Посчитать пример: name м
+:small_red_triangle_down: Справка по математике: name м помощь
+:small_red_triangle_down: Получить ТВ-программу на ближайшее время: name телепрограмма
+:small_red_triangle_down: Просто попиздеть: name <предложение/фраза>
+:star: [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
+:star: [Для админов] Выключить бота: name завали ебало
+:star: [Для админов] Включить бота : name камбекнись
 
-            Список разработчиков:
-              :copyright: Илья - http://vk.com/id96996256
-            Список админов:
-              :a: Илья - http://vk.com/id96996256
-              :a: Дмитрий - http://vk.com/id77698338
-              :a: Полина - https://vk.com/id299314896
+Список разработчиков:
+:copyright: Илья - http://vk.com/id96996256
+Список админов:
+:a: Илья - http://vk.com/id96996256
+:a: Дмитрий - http://vk.com/id77698338
+:a: Полина - https://vk.com/id299314896
         """.replace('name', self._bot_name).replace('version', VERSION), use_aliases=True)
 
     def _get_bot_id(self):
