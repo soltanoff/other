@@ -41,6 +41,15 @@ SAVE_LIST = [
     'tanh'
 ]
 
+# dbconnect.py
+DBSETTINGS = {
+    'user':     'dbuser',
+    'password': 'dbpassword',
+    'host':     'localhost',
+    'port':     3306,
+    'database': 'db_bot'
+}
+
 # bot.py
 BOT_SIGN_IN = {
     'login': u'login@login',
