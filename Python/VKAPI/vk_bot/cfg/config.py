@@ -51,9 +51,10 @@ DBSETTINGS = {
 }
 
 # bot.py
+RESTART_TIME = 7200
 BOT_SIGN_IN = {
-    'login': u'login@login',
-    'password': u'password'
+    'login': u'+79531472458',
+    'password': u'huluna2013'
 }
 LITERALS = {
     'db_error': emoji.emojize(u'Я не умею разговаривать. :shit:', use_aliases=True),
@@ -123,8 +124,22 @@ LITERALS = {
                 emoji.emojize(u'полагаю, что это {user_name} :smiling_imp:', use_aliases=True),
                 emoji.emojize(u'это {user_name}, зуб даю :point_up:', use_aliases=True)
             ]
+        },
+        'date': {
+            'cmd': u"{bot_name} когда",
+            'answer': [
+                emoji.emojize(u'хм, наверно :point_right: {date}', use_aliases=True),
+                u'я считаю, что {date}',
+                emoji.emojize(u'инфа :100:, что {date}', use_aliases=True),
+                emoji.emojize(u'полагаю, что это {date} :smiling_imp:', use_aliases=True)
+            ]
         }
     }
 }
-ADMIN_LIST = [96996256, 77698338, 299314896]
-VERSION = 'v1.2.9'
+DATE_MONTH = [
+    'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
+    'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+]
+ADMIN_LIST = [96996256, 77698338, 299314896, 141004290, 25306994, 148006413]
+VERSION = 'v1.3.0'
+
