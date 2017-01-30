@@ -6,14 +6,14 @@ import time
 import emoji
 import vk_api
 
-from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION, DBSETTINGS
+from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION, RESTART_TIME, DATE_MONTH
 from database.dbconnector import DBConnector
 from database.logger import Logger
 from lib.botmath import BotMath
 from lib.newsparser import NewsParser
 
 
-class BotEngine(object):
+class MainBot(object):
     def __init__(self):
         self.__disable = False
         self.__is_intelligent = False
@@ -24,25 +24,10 @@ class BotEngine(object):
             captcha_handler=self.__captcha_handler
         )
 
-        try:
-            self._vk_session.authorization()
-        except vk_api.AuthorizationError as error_msg:
-            print(error_msg)
-            return
+        self.__vk_session_auth()
 
         self._logger = Logger()
-        try:
-            self._db = DBConnector(
-                DBSETTINGS['user'],
-                DBSETTINGS['password'],
-                DBSETTINGS['host'],
-                DBSETTINGS['port'],
-                DBSETTINGS['database']
-            )
-        except Exception as error_msg:
-            print('[DATABASE] Error: %s' % error_msg)
-            self._db = None
-
+        self.__db_connect()
         self._news = NewsParser()
         self._math = BotMath()
 
@@ -58,17 +43,41 @@ class BotEngine(object):
         self.__intell__msg_list = []
         self.__update_messages()
 
-    def __update_messages(self):
+    def __db_connect(self):
+        try:
+            self._db = DBConnector()
+        except Exception as error_msg:
+            print('[DATABASE] Error: %s' % error_msg)
+            self._db = None
+
+    def __vk_session_auth(self):
+        try:
+            self._vk_session.authorization()
+        except vk_api.AuthorizationError as error_msg:
+            print(error_msg)
+            return
+
+    def __update_messages(self, add_new_msg=True):
         u"""
             Метод используемый для обновления списков с айдишниками сообщений.
             Используется после добавления/удаления нового сообщения.
         """
         if self._db:
-            self.__ans_list = self._db.select_ids(is_question_answer=True)
-            self.__msg_list = self._db.select_ids()
+            if add_new_msg:
+                self.__ans_list = self._db.select_ids(is_question_answer=True)
+                self.__msg_list = self._db.select_ids()
 
-            self.__intell__ans_list = self._db.select_ids(is_question_answer=True, is_intelligent=True)
-            self.__intell__msg_list = self._db.select_ids(is_intelligent=True)
+                self.__intell__ans_list = self._db.select_ids(is_question_answer=True, is_intelligent=True)
+                self.__intell__msg_list = self._db.select_ids(is_intelligent=True)
+            else:
+                if not self.__ans_list:
+                    self.__ans_list = self._db.select_ids(is_question_answer=True)
+                if not self.__msg_list:
+                    self.__msg_list = self._db.select_ids()
+                if not self.__intell__ans_list:
+                    self.__intell__ans_list = self._db.select_ids(is_question_answer=True, is_intelligent=True)
+                if not self.__intell__msg_list:
+                    self.__intell__msg_list = self._db.select_ids(is_intelligent=True)
 
     @staticmethod
     def __captcha_handler(captcha):
@@ -126,7 +135,10 @@ class BotEngine(object):
             Получаем рандомное сообщение из списка айдишников сообщений.
         """
         if self._db:
-            return self._db.get_message(random.choice(msg_list))
+            message = random.choice(msg_list)
+            msg_list.remove(message)
+            self.__update_messages(add_new_msg=False)
+            return self._db.get_message(message)
         else:
             return LITERALS['db_error']
 
@@ -157,7 +169,7 @@ class BotEngine(object):
         if self._db:
             self._db.add_new_row(
                 msg['user_id'],
-                self._prepare_msg(msg['body'][len(self._bot_name) + 9:]),
+                emoji.demojize(self._prepare_msg(msg['body'][len(self._bot_name) + 9:])),
                 is_intelligent=self.__is_intelligent
             )
             user_name = self._get_user_name(msg['user_id'])
@@ -174,9 +186,9 @@ class BotEngine(object):
             Помечаем сообщение как удаленое, обновляем списки айдишников сообщений.
         """
         if self._db:
-            self._db.del_row(self._prepare_msg(msg['body'][len(self._bot_name) + 8:]))
+            self._db.del_row(emoji.demojize(self._prepare_msg(msg['body'][len(self._bot_name) + 8:])))
             user_name = self._get_user_name(msg['user_id'])
-            text = self._prepare_msg(msg['body'][len(self._bot_name) + 9:])
+            text = self._prepare_msg(msg['body'][len(self._bot_name) + 8:])
             self._send(
                 msg,
                 LITERALS['forget_data'].replace('{user_name}', user_name).replace('{message}', text)
@@ -193,26 +205,30 @@ class BotEngine(object):
 :dizzy: Моя текущая версия: version
 
 :book: Список моих команд на сегодня:
-:small_red_triangle_down: Выучить что-то новое: name запомни <предложение/фраза>
-:small_red_triangle_down: Выдать вероятность события: name инфа <фраза/название/событие>
-:small_red_triangle_down: Выбирает случайного участника беседы: name кто <предложение/фраза>
-:small_red_triangle_down: Сменить режим общения бота: name смени режим
-:small_red_triangle_down: Получить текущий режим бота: name режим
-:small_red_triangle_down: Получить список новостей: name новости
-:small_red_triangle_down: Посчитать пример: name м
-:small_red_triangle_down: Справка по математике: name м помощь
-:small_red_triangle_down: Получить ТВ-программу на ближайшее время: name телепрограмма
-:small_red_triangle_down: Просто попиздеть: name <предложение/фраза>
-:star: [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
-:star: [Для админов] Выключить бота: name завали ебало
-:star: [Для админов] Включить бота : name камбекнись
+  :small_red_triangle_down: Выучить что-то новое: name запомни <предложение/фраза>
+  :small_red_triangle_down: Выдать вероятность события: name инфа <фраза/название/событие>
+  :small_red_triangle_down: Выбирает случайного участника беседы: name кто <предложение/фраза>
+  :small_red_triangle_down: Выбирает случайнную дату: name когда <предложение/фраза>
+  :small_red_triangle_down: Сменить режим общения бота: name смени режим
+  :small_red_triangle_down: Получить текущий режим бота: name режим
+  :small_red_triangle_down: Получить список новостей: name новости
+  :small_red_triangle_down: Посчитать пример: name м
+  :small_red_triangle_down: Справка по математике: name м помощь
+  :small_red_triangle_down: Получить ТВ-программу на ближайшее время: name телепрограмма
+  :small_red_triangle_down: Просто попиздеть: name <предложение/фраза>
+  :star: [Для админов] Забыть что-то старое: name забудь <предложение/фраза>
+  :star: [Для админов] Выключить бота: name завали ебало
+  :star: [Для админов] Включить бота : name камбекнись
 
 Список разработчиков:
-:copyright: Илья - http://vk.com/id96996256
+  :copyright: Илья - https://vk.com/id96996256
 Список админов:
-:a: Илья - http://vk.com/id96996256
-:a: Дмитрий - http://vk.com/id77698338
-:a: Полина - https://vk.com/id299314896
+  :a: Илья - https://vk.com/id96996256
+  :a: Александр - https://vk.com/id148006413
+  :a: Дмитрий - https://vk.com/id77698338
+  :a: Полина - https://vk.com/id299314896
+  :a: Павел - https://vk.com/id141004290
+  :a: Алексей - https://vk.com/id25306994
         """.replace('name', self._bot_name).replace('version', VERSION), use_aliases=True)
 
     def _get_bot_id(self):
@@ -431,6 +447,32 @@ class BotEngine(object):
                 return True
         return False
 
+    def __command_bot_date(self, msg):
+        u"""
+            Команда вывода ответа на вопрос "когда ...?"
+         """
+        def formatDate(datestamp):
+            import datetime
+            date = datetime.datetime.fromtimestamp(datestamp)
+            return '%s %s %s' % (date.day, DATE_MONTH[date.month - 1], date.year)
+
+        # if 'chat_id' in msg:
+        if msg['body'][:len(self._bot_name) + 6] == LITERALS['commands']['date']['cmd'] \
+                .replace('{bot_name}', self._bot_name):
+            self._add_msg_to_ignore(msg)
+            # user_name = self._get_chat_users_ids(msg['chat_id'])
+            answer = LITERALS['commands']['date']['answer']
+
+            datestamp = time.time()
+            datestamp += random.randint(0, 22000000)
+
+            self._send(msg, u'%s, %s' % (
+                self._get_user_name(msg['user_id']),
+                answer[random.randint(0, len(answer) - 1)].replace('{date}', formatDate(datestamp))
+            ))
+            return True
+        return False
+
     def __analyze_messages(self, msg_list=None):
         u"""
             Основной метод анализа входящих сообщений.
@@ -454,6 +496,7 @@ class BotEngine(object):
                         self.__command_bot_tv_list(msg)
                         self.__command_bot_math(msg)
                         self.__command_bot_who_is(msg)
+                        self.__command_bot_date(msg)
                         # априори последняя команда, иначе все что после выполнено не будет.
                         self.__command_bot_message(msg)
                     else:
@@ -465,6 +508,8 @@ class BotEngine(object):
             Основной метод бота для работы.
             Читает первые 5 входящих сообщений.
          """
+
+        start_time = time.time()
         while True:
             self.__analyze_messages(self._vk.messages.get(count=5)['items'])
             # current_chat_title = vk.messages.getChat(chat_id=target_chat_id)['title']
@@ -472,6 +517,11 @@ class BotEngine(object):
             #     print('Changed:', current_chat_title, 'to', target_chat_title)
             #     vk.messages.editChat(chat_id=target_chat_id, title=target_chat_title)
             time.sleep(2)
+            if time.time() - start_time >= RESTART_TIME:
+                start_time = time.time()
+                self.__vk_session_auth()
+                self.__db_connect()
+                print('[BOT] Planning restart')
 
     def start_bot(self, debug=False):
         u"""
@@ -479,6 +529,7 @@ class BotEngine(object):
          """
         print(u"Starting work...")
         while True:
+
             if debug:
                 self.__main()
             else:
