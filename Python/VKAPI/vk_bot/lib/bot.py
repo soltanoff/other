@@ -13,7 +13,7 @@ from lib.botmath import BotMath
 from lib.newsparser import NewsParser
 
 
-class MainBot(object):
+class BotEngine(object):
     def __init__(self):
         self.__disable = False
         self.__is_intelligent = False
