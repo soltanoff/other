@@ -4,7 +4,7 @@ import mysql.connector as db_bot
 
 
 class DBConnector(object):
-    def __init__(self, user='root', pwd=None, host='localhost', port=3306, database='db_bot'):
+    def __init__(self, user='root', pwd='dbpassword', host='localhost', port=3306, database='db_bot'):
         self._db = db_bot.connect(user=user, password=pwd, host=host, port=port, database=database)
         self._cursor = self._db.cursor()
 
