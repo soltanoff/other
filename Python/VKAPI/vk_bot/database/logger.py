@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-from cfg.config import MESSAGE_HISTORY
+from cfg.config import MESSAGE_HISTORY, get_time
 
 
 class Logger(object):
@@ -14,7 +14,7 @@ class Logger(object):
             f.close()
             return result
         except Exception as error_msg:
-            print(u'[BOT ERROR]: %s' % error_msg)
+            print(get_time() + u'[BOT ERROR]: %s' % error_msg)
             return []
 
     @staticmethod
@@ -25,4 +25,4 @@ class Logger(object):
                 f.write(x + '\n')
             f.close()
         except Exception as error_msg:
-            print(u'[BOT ERROR]: %s' % error_msg)
+            print(get_time() + u'[BOT ERROR]: %s' % error_msg)

@@ -2,6 +2,8 @@
 # -*- coding: utf8 -*-
 import mysql.connector as db_bot
 
+from cfg.config import get_time
+
 
 class DBConnector(object):
     def __init__(self, user='root', pwd='dbpassword', host='localhost', port=3306, database='db_bot'):
@@ -26,7 +28,7 @@ class DBConnector(object):
 
             return result[0][0]
         except Exception as error_msg:
-            print(u'[DB ERROR]: %s' % error_msg)
+            print(get_time() + u'[DB ERROR]: %s' % error_msg)
             return u'ой да, ошибка 42'
 
     def get_exists(self, text):
@@ -42,7 +44,7 @@ class DBConnector(object):
                 ''' % text)
             return result[0][0]
         except Exception as error_msg:
-            print(u'[DB ERROR]: %s' % error_msg)
+            print(get_time() + u'[DB ERROR]: %s' % error_msg)
             return None
 
     def del_row(self, text):
