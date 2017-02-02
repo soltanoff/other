@@ -4,7 +4,7 @@ from urllib.request import urlopen
 
 import emoji
 from bs4 import BeautifulSoup
-from cfg.config import BASE_URL
+from cfg.config import BASE_URL, get_time
 
 
 class NewsParser(object):
@@ -43,7 +43,7 @@ class NewsParser(object):
                     }
                 )
             except Exception as error_msg:
-                print("[tv_list] %s" % error_msg)
+                print(get_time() + "[tv_list] %s" % error_msg)
 
         return tv_list
 

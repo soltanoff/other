@@ -6,7 +6,8 @@ import time
 import emoji
 import vk_api
 
-from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION, RESTART_TIME, DATE_MONTH
+from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION, RESTART_TIME, DATE_MONTH, get_time, \
+    MAX_BOT_ANSWER_LEN
 from database.dbconnector import DBConnector
 from database.logger import Logger
 from lib.botmath import BotMath
@@ -47,14 +48,14 @@ class BotEngine(object):
         try:
             self._db = DBConnector()
         except Exception as error_msg:
-            print('[DATABASE] Error: %s' % error_msg)
+            print(get_time() + '[DATABASE] Error: %s' % error_msg)
             self._db = None
 
     def __vk_session_auth(self):
         try:
             self._vk_session.authorization()
         except vk_api.AuthorizationError as error_msg:
-            print(error_msg)
+            print(get_time() + error_msg)
             return
 
     def __update_messages(self, add_new_msg=True):
@@ -119,15 +120,25 @@ class BotEngine(object):
         u"""
             Метод отправки собщения с текстом text.
         """
+        print(
+            get_time() +
+            'user: \t\t%s (https//vk.com/id%s)\n\t\t\t\t\tmessage: \t%s\n\t\t\t\t\tanswer: \t%s' % (
+                self._get_user_full_name(msg['user_id']),
+                msg['user_id'],
+                msg['body'],
+                text if len(text) < MAX_BOT_ANSWER_LEN else '[ERROR] BOT send large message'
+            )
+        )
+
         if 'chat_id' in msg:
             self._vk.messages.send(
                 chat_id=msg['chat_id'],
-                message=text
+                message=emoji.emojize(text)
             )
         else:
             self._vk.messages.send(
                 user_id=msg['user_id'],
-                message=text
+                message=emoji.emojize(text)
             )
 
     def _get_random_message(self, msg_list):
@@ -178,7 +189,7 @@ class BotEngine(object):
                 msg,
                 LITERALS['remember_data'].replace('{user_name}', user_name).replace('{message}', text)
             )
-            print(u'Remember new data: from %s, msg: %s' % (msg['user_id'], text))
+            print(get_time() + u'[DATA]: remember new data from %s, msg: %s' % (msg['user_id'], text))
             self.__update_messages()
 
     def _forget_data(self, msg):
@@ -193,7 +204,7 @@ class BotEngine(object):
                 msg,
                 LITERALS['forget_data'].replace('{user_name}', user_name).replace('{message}', text)
             )
-            print(u'Remove data: from %s, msg: %s' % (msg['user_id'], text))
+            print(get_time() + u'[DATA]: forget data from %s, msg: %s' % (msg['user_id'], text))
             # self.__ans_list = self._db.select_ids()
             self.__update_messages()
 
@@ -243,11 +254,20 @@ class BotEngine(object):
         """
         return u'%s' % self._vk.users.get(user_ids=[user_id])[0]['first_name']
 
-    def _get_user_lastname(self, user_id):
+    def _get_user_full_name(self, user_id):
         u"""
-            Получаем фамилию пользователя по его айди.
+            Получаем имя и фамилию пользователя по его айди.
         """
-        return u'%s' % self._vk.users.get(user_ids=[user_id])[0]['last_name']
+        return u'%s %s' % (
+            self._vk.users.get(user_ids=[user_id])[0]['first_name'],
+            self._vk.users.get(user_ids=[user_id])[0]['last_name']
+        )
+
+    # def _get_user_lastname(self, user_id):
+    #     u"""
+    #         Получаем фамилию пользователя по его айди.
+    #     """
+    #     return u'%s' % self._vk.users.get(user_ids=[user_id])[0]['last_name']
 
     def _get_chat_users_ids(self, chat_id):
         u"""
@@ -256,7 +276,8 @@ class BotEngine(object):
         users = self._vk.messages.getChatUsers(chat_id=chat_id)
         users.remove(self._get_bot_id())
         idx = random.randint(0, len(users) - 1)
-        return u'%s %s' % (self._get_user_name(users[idx]), self._get_user_lastname(users[idx]))
+        return self._get_user_full_name(idx)
+        # u'%s %s' % (self._get_user_name(users[idx]), self._get_user_lastname(users[idx]))
 
     def __command_bot_off(self, msg):
         u"""
@@ -521,13 +542,13 @@ class BotEngine(object):
                 start_time = time.time()
                 self.__vk_session_auth()
                 self.__db_connect()
-                print('[BOT] Planning restart')
+                print(get_time() + '[BOT] Planning restart')
 
     def start_bot(self, debug=False):
         u"""
             Метод, запускающий бота.
          """
-        print(u"Starting work...")
+        print(get_time() + u"Starting work...")
         while True:
 
             if debug:
@@ -536,4 +557,4 @@ class BotEngine(object):
                 try:
                     self.__main()
                 except Exception as error_msg:
-                    print('Oops! I\'m restarting. Error: %s' % error_msg)
+                    print(get_time() + 'Oops! I\'m restarting. Error: %s' % error_msg)

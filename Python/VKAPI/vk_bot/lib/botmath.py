@@ -4,7 +4,7 @@ from math import *
 
 import emoji
 
-from cfg.config import SAVE_LIST
+from cfg.config import SAVE_LIST, get_time
 
 
 class BotMath(object):
@@ -58,7 +58,7 @@ class BotMath(object):
             x = eval(expr, {"__builtins__": None}, self._safe_dict)
             return u'ответ: %s' % x if x else 'none'
         except Exception as error_msg:
-            print('[BotMath] %s' % error_msg)
+            print(get_time() + '[BotMath] %s' % error_msg)
             return emoji.emojize(u'ошибка вычисления, ты ввел что-то неправильно:heavy_exclamation_mark: Читай справку. :book:', use_aliases=True)
 
 
