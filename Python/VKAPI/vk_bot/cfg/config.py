@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 # logger.py
 import emoji
+import time
 
 MESSAGE_HISTORY = 'cfg/ignore_msgs.cfg'
 
@@ -51,6 +52,7 @@ DBSETTINGS = {
 }
 
 # bot.py
+MAX_BOT_ANSWER_LEN = 100
 RESTART_TIME = 7200
 BOT_SIGN_IN = {
     'login': u'+79531472458',
@@ -142,4 +144,8 @@ DATE_MONTH = [
 ]
 ADMIN_LIST = [96996256, 77698338, 299314896, 141004290, 25306994, 148006413]
 VERSION = 'v1.3.0'
+
+
+def get_time():
+    return time.strftime('[%x|%X] ')
 
