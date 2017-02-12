@@ -7,7 +7,7 @@ import emoji
 import vk_api
 
 from cfg.config import BOT_SIGN_IN, LITERALS, ADMIN_LIST, VERSION, RESTART_TIME, DATE_MONTH, get_time, \
-    MAX_BOT_ANSWER_LEN
+    MAX_BOT_ANSWER_LEN, MAX_BOT_MESSAGE_ANALYZE
 from database.dbconnector import DBConnector
 from database.logger import Logger
 from lib.botmath import BotMath
@@ -190,7 +190,7 @@ class BotEngine(object):
                 LITERALS['remember_data'].replace('{user_name}', user_name).replace('{message}', text)
             )
             print(get_time() + u'[DATA]: remember new data from %s, msg: %s' % (msg['user_id'], text))
-            self.__update_messages()
+            self.__update_messages(add_new_msg=False)
 
     def _forget_data(self, msg):
         u"""
@@ -206,7 +206,7 @@ class BotEngine(object):
             )
             print(get_time() + u'[DATA]: forget data from %s, msg: %s' % (msg['user_id'], text))
             # self.__ans_list = self._db.select_ids()
-            self.__update_messages()
+            self.__update_messages(add_new_msg=False)
 
     def _get_help(self):
         u"""
@@ -276,7 +276,7 @@ class BotEngine(object):
         users = self._vk.messages.getChatUsers(chat_id=chat_id)
         users.remove(self._get_bot_id())
         idx = random.randint(0, len(users) - 1)
-        return self._get_user_full_name(idx)
+        return self._get_user_full_name(users[idx])
         # u'%s %s' % (self._get_user_name(users[idx]), self._get_user_lastname(users[idx]))
 
     def __command_bot_off(self, msg):
@@ -504,9 +504,13 @@ class BotEngine(object):
             for msg in msg_list:
                 if not self._is_msg_in_ignore(msg):
                     if not self.__disable:
+                        # исключаем все запятые
+                        msg['body'] = msg['body'].replace(',', '')
+
                         if msg['user_id'] in ADMIN_LIST:
                             self.__command_bot_off(msg)
                             self.__command_bot_forget(msg)
+                            # self.__command_bot_remember(msg)
 
                         self.__command_bot_help(msg)
                         self.__command_bot_remember(msg)
@@ -532,7 +536,7 @@ class BotEngine(object):
 
         start_time = time.time()
         while True:
-            self.__analyze_messages(self._vk.messages.get(count=5)['items'])
+            self.__analyze_messages(self._vk.messages.get(count=MAX_BOT_MESSAGE_ANALYZE)['items'])
             # current_chat_title = vk.messages.getChat(chat_id=target_chat_id)['title']
             # if current_chat_title != target_chat_title:
             #     print('Changed:', current_chat_title, 'to', target_chat_title)
