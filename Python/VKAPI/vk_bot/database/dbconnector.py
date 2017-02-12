@@ -58,8 +58,8 @@ class DBConnector(object):
         if not self.get_exists(text):
             self._cursor.execute(u'''
                 INSERT INTO
-                    messages(creator_id, message, create_date, is_intelligent)
-                VALUES(%s, '%s', CURRENT_DATE(), %s)
+                    messages(creator_id, message, create_date, is_intelligent, deleted)
+                VALUES(%s, '%s', CURRENT_DATE(), %s, 1)
                 ''' % (user_id, text, 1 if is_intelligent else 0)
             )
             self._db.commit()
@@ -76,7 +76,7 @@ class DBConnector(object):
                 %s
             ;
         ''' % (
-            u'AND is_intelligent = 1' if is_intelligent else u'',
+            u'AND is_intelligent = %s' % (u'1' if is_intelligent else u'0'),
             u'AND is_question_answer = 1' if is_question_answer else u'AND is_question_answer = 0'
         )
         return self._query(stmt)
